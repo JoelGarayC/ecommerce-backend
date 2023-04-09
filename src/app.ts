@@ -1,13 +1,20 @@
 import cors from 'cors'
 import express, { type Express } from 'express'
-import { api } from './config'
+import { api, whitelist } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 
-const corsOptions = {
-  origin: 'https://ecommerce-backend-rho.vercel.app'
-}
+console.log(whitelist())
 
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist().includes(origin as string) || whitelist().includes('*')) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 class App {
   public app: Express
 
