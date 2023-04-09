@@ -6,16 +6,18 @@ import routes from './routes/index.routes'
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    console.log(origin)
-    if (
-      origin !== undefined ||
-      whitelist().includes(origin) ||
-      whitelist().includes('*')
-    ) {
+    if (origin === undefined) {
       callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
+      return
     }
+    if (!whitelist().includes(origin) && !whitelist().includes('*')) {
+      const msg =
+        'The CORS policy for this site does not allow access from the specified Origin.'
+      callback(new Error(msg), false)
+      return
+    }
+
+    callback(null, true)
   }
 }
 class App {
