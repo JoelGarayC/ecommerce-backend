@@ -18,7 +18,8 @@ const productionAllowedOrigins = [
 export function whitelist(): string[] {
   let allowedOrigins: string[]
   if (process.env.NODE_ENV === 'production') {
-    return (allowedOrigins = productionAllowedOrigins)
+    allowedOrigins = productionAllowedOrigins
+    return allowedOrigins
   }
   allowedOrigins = developmentAllowedOrigins
   return allowedOrigins
