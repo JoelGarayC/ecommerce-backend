@@ -9,17 +9,10 @@ export const api = {
   url: `http://localhost:${PORT}${pathBase}`
 }
 
-const developmentAllowedOrigins = ['*']
-const productionAllowedOrigins = ['https://ecommerce-backend-rho.vercel.app']
-
-export function whitelist(): any[] {
-  let allowedOrigins: string[]
-  if (process.env.NODE_ENV === 'production') {
-    allowedOrigins = productionAllowedOrigins
-    return allowedOrigins
-  }
-  allowedOrigins = developmentAllowedOrigins
-  return allowedOrigins
-}
+export const developmentAllowedOrigins = ['*']
+export const productionAllowedOrigins = [
+  'https://ecommerce-backend-rho.vercel.app',
+  'https://ecommerce-backend-33ja3purz-joelgarayc.vercel.app'
+]
 
 export { MONGODB_URI, NODE_ENV, PORT }

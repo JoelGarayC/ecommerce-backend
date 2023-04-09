@@ -1,8 +1,19 @@
 import cors from 'cors'
 import express, { type Express } from 'express'
-import { api, whitelist } from './config'
+import {
+  api,
+  developmentAllowedOrigins,
+  productionAllowedOrigins
+} from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
+
+let allowedOrigins: string[]
+if (process.env.NODE_ENV === 'production') {
+  allowedOrigins = productionAllowedOrigins
+} else {
+  allowedOrigins = developmentAllowedOrigins
+}
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
@@ -10,7 +21,7 @@ const corsOptions: cors.CorsOptions = {
       callback(null, true)
       return
     }
-    if (whitelist().includes(origin)) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true)
       return
     }
@@ -20,6 +31,7 @@ const corsOptions: cors.CorsOptions = {
     callback(new Error(msg), false)
   }
 }
+
 class App {
   public app: Express
 
