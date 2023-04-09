@@ -4,10 +4,9 @@ import { api, whitelist } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 
-console.log(whitelist())
-
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
+    console.log(origin)
     if (whitelist().includes(origin as string) || whitelist().includes('*')) {
       callback(null, true)
     } else {
