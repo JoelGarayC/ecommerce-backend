@@ -2,7 +2,6 @@ import express, { type Express } from 'express'
 import { api } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
-import { basePath } from './utils/basePath'
 
 class App {
   public app: Express
@@ -21,7 +20,7 @@ class App {
   private middlewares(): void {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(express.static(`${basePath}/public`))
+    this.app.use(express.static('public'))
   }
 
   private routes(): void {

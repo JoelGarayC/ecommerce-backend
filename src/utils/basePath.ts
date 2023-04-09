@@ -1,3 +1,5 @@
 import { join } from 'path'
 
-export const basePath = join(__dirname, '/../..')
+export const baseSrc = join(__dirname, '/..')
+
+console.log(baseSrc)
