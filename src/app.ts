@@ -1,7 +1,12 @@
+import cors from 'cors'
 import express, { type Express } from 'express'
 import { api } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
+
+const corsOptions = {
+  origin: 'https://ecommerce-backend-rho.vercel.app'
+}
 
 class App {
   public app: Express
@@ -18,6 +23,7 @@ class App {
   }
 
   private middlewares(): void {
+    this.app.use(cors(corsOptions))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.static('public'))
