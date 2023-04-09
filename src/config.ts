@@ -12,7 +12,7 @@ export const api = {
 const developmentAllowedOrigins = ['*']
 const productionAllowedOrigins = ['https://ecommerce-backend-rho.vercel.app']
 
-export function whitelist(): string[] {
+export function whitelist(): any[] {
   let allowedOrigins: string[]
   if (process.env.NODE_ENV === 'production') {
     allowedOrigins = productionAllowedOrigins

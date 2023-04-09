@@ -7,7 +7,11 @@ import routes from './routes/index.routes'
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     console.log(origin)
-    if (whitelist().includes(origin as string) || whitelist().includes('*')) {
+    if (
+      origin !== undefined ||
+      whitelist().includes(origin) ||
+      whitelist().includes('*')
+    ) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
