@@ -13,7 +13,7 @@ class CartManager {
   async getCartById(id: string): Promise<ICart> {
     await validateIdCart(id)
 
-    const cartById = await Cart.findById(id).populate('products._id')
+    const cartById = await Cart.findById(id).populate('products.product')
     if (cartById === null) {
       throw new CustomError(
         `Carrito con ID: ${id}, no se encontró los productos`,
@@ -43,7 +43,7 @@ class CartManager {
     // Verificar si el producto ya existe en el carrito, si existe aumente el quantity
     const existProdinCart = await Cart.findOne({
       _id: idCart,
-      'products._id': idProduct
+      'products.product': idProduct
     })
 
     if (existProdinCart !== null) {
@@ -51,7 +51,7 @@ class CartManager {
       await Cart.findOneAndUpdate(
         {
           _id: idCart,
-          'products._id': idProduct
+          'products.product': idProduct
         },
         {
           $inc: { 'products.$.quantity': 1 }
@@ -62,7 +62,7 @@ class CartManager {
 
     // Si el producto no existe en el carrito, se agrega con una cantidad de 1
     cartById.products.push({
-      id: idProduct,
+      product: idProduct,
       quantity: 1
     })
 
@@ -86,7 +86,7 @@ class CartManager {
 
     const existProdinCart = await Cart.findOne({
       _id: idCart,
-      'products._id': idProduct
+      'products.product': idProduct
     })
     if (existProdinCart === null) {
       throw new CustomError(
@@ -99,7 +99,7 @@ class CartManager {
     await Cart.findOneAndUpdate(
       {
         _id: idCart,
-        'products._id': idProduct
+        'products.product': idProduct
       },
       {
         $set: { 'products.$.quantity': quantity }
@@ -112,7 +112,7 @@ class CartManager {
     await validateIdCart(idCart)
 
     if (!Array.isArray(products)) {
-      throw new CustomError('Los productos deben ser un array', 400)
+      throw new CustomError('Los productos deben ser un array válido', 400)
     }
 
     // validacion del arreglo de productos, de acueerdo al formato
@@ -120,19 +120,20 @@ class CartManager {
       (obj: unknown): obj is ICartItem =>
         typeof obj === 'object' &&
         obj !== null &&
-        '_id' in obj &&
+        'product' in obj &&
         'quantity' in obj &&
         Number.isInteger(obj.quantity)
     )
+    console.log(isValid)
     if (!isValid) {
       throw new CustomError(
-        "Escribe un formato (arreglo de productos) válido; ejemplo: [{'_id':'idValidodelProducto','quantity': 2},{'_id': 'idDelProd','quantity': 1}]",
+        "Escribe un formato (arreglo de productos) válido; ejemplo: [{'product':'idValidodelProducto','quantity': 2},{'product': 'idDelProd','quantity': 1}]",
         400
       )
     }
 
     // validacion de que todos los productos existen en la bd
-    const productIds = products.map((obj: ICartItem) => obj.id)
+    const productIds = products.map((obj: ICartItem) => obj.product)
     const areProductsValid = await Product.find({
       _id: { $in: productIds }
     })
@@ -154,7 +155,7 @@ class CartManager {
 
     const existProdinCart = await Cart.findOne({
       _id: idCart,
-      'products._id': idProduct
+      'products.product': idProduct
     })
     if (existProdinCart === null) {
       throw new CustomError(
@@ -166,15 +167,17 @@ class CartManager {
     // Eliminando el producto con id del carrito
     await Cart.updateOne(
       { _id: idCart },
-      { $pull: { products: { _id: idProduct } } }
+      { $pull: { products: { product: idProduct } } }
     )
-    return `Producto con ID: ${idProduct} eliminado correctamente`
+    return `Producto con ID: ${idProduct} eliminado del carrito correctamente`
   }
 
   async deleteProducts(idCart: string): Promise<string> {
     await validateIdCart(idCart)
 
-    const cart = await Cart.findOne({ _id: idCart }).populate('products._id')
+    const cart = await Cart.findOne({ _id: idCart }).populate(
+      'products.product'
+    )
     if (cart === null) {
       throw new CustomError(`No se encontró el carrito con ID: ${idCart}`, 404)
     }
@@ -188,7 +191,7 @@ class CartManager {
     }
 
     await Cart.updateOne({ _id: idCart }, { $set: { products: [] } })
-    return 'Todos los productos  eliminados correctamente'
+    return 'Todos los productos del carrito eliminados correctamente'
   }
 }
 

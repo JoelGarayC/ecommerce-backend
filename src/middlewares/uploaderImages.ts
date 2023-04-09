@@ -1,6 +1,6 @@
 import { type Request } from 'express'
 import multer from 'multer'
-import { baseSrc } from '../utils/basePath'
+import { baseSrc } from '../utils/baseSrc'
 
 const storage = multer.diskStorage({
   destination: function (

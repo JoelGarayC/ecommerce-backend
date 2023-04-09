@@ -1,36 +1,8 @@
 import cors from 'cors'
 import express, { type Express } from 'express'
-import {
-  api,
-  developmentAllowedOrigins,
-  productionAllowedOrigins
-} from './config'
+import { api, corsOptions } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
-
-let allowedOrigins: string[]
-if (process.env.NODE_ENV === 'production') {
-  allowedOrigins = productionAllowedOrigins
-} else {
-  allowedOrigins = developmentAllowedOrigins
-}
-
-const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    if (origin === undefined) {
-      callback(null, true)
-      return
-    }
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true)
-      return
-    }
-
-    const msg =
-      'The CORS policy for this site does not allow access from the specified Origin.'
-    callback(new Error(msg), false)
-  }
-}
 
 class App {
   public app: Express

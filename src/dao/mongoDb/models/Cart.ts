@@ -4,9 +4,9 @@ import { type ICart } from '../../../types/ICart'
 const CartSchema: Schema = new Schema<ICart>({
   products: [
     {
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
+      product: {
+        ref: 'Product',
+        type: Schema.Types.ObjectId
       },
       quantity: Number
     }
