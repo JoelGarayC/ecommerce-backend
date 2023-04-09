@@ -10,10 +10,7 @@ export const api = {
 }
 
 const developmentAllowedOrigins = ['*']
-const productionAllowedOrigins = [
-  'https://ecommerce-backend-rho.vercel.app',
-  'https://ecommerce-backend-git-main-joelgarayc.vercel.app'
-]
+const productionAllowedOrigins = ['https://ecommerce-backend-rho.vercel.app']
 
 export function whitelist(): string[] {
   let allowedOrigins: string[]
