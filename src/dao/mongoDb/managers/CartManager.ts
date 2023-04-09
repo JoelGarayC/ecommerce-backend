@@ -124,7 +124,6 @@ class CartManager {
         'quantity' in obj &&
         Number.isInteger(obj.quantity)
     )
-    console.log(isValid)
     if (!isValid) {
       throw new CustomError(
         "Escribe un formato (arreglo de productos) válido; ejemplo: [{'product':'idValidodelProducto','quantity': 2},{'product': 'idDelProd','quantity': 1}]",
