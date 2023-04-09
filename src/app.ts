@@ -10,14 +10,14 @@ const corsOptions: cors.CorsOptions = {
       callback(null, true)
       return
     }
-    if (!whitelist().includes(origin)) {
-      const msg =
-        'The CORS policy for this site does not allow access from the specified Origin.'
-      callback(new Error(msg), false)
+    if (whitelist().includes(origin)) {
+      callback(null, true)
       return
     }
 
-    callback(null, true)
+    const msg =
+      'The CORS policy for this site does not allow access from the specified Origin.'
+    callback(new Error(msg), false)
   }
 }
 class App {
