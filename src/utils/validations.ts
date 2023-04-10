@@ -90,7 +90,6 @@ export async function validateIdCart(idCart: string): Promise<void> {
 }
 
 export function imagesValidate(req: Request): IThumbnail[] {
-  console.log(req.files)
   // if (!Array.isArray(req.files) && req.files === undefined) {
   //   throw new CustomError('No se pudieron guardar las imágenes', 400)
   // }

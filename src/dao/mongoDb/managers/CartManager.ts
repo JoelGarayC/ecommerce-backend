@@ -6,7 +6,7 @@ import { Product } from '../models/Product'
 
 class CartManager {
   async getCarts(): Promise<ICart[]> {
-    const data = await Cart.find()
+    const data = await Cart.find().lean()
     return data
   }
 

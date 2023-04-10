@@ -45,7 +45,7 @@ class ProductManager {
       throw new CustomError(`El ID: ${id} no es válido`, 400)
     }
 
-    const productById = await Product.findById(id)
+    const productById = await Product.findById(id).lean()
     if (productById === null) {
       throw new CustomError(`Producto con ID: ${id} no encontrado`, 404)
     }

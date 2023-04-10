@@ -3,6 +3,8 @@ import express, { type Express } from 'express'
 import { api, corsOptions } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
+import viewsRoutes from './routes/views.routes'
+import { baseSrc } from './utils/baseSrc'
 
 class App {
   public app: Express
@@ -22,11 +24,12 @@ class App {
     this.app.use(cors(corsOptions))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(express.static('public'))
+    this.app.use(express.static(baseSrc + '/public'))
   }
 
   private routes(): void {
     this.app.use(api.pathBase, routes)
+    this.app.use('/', viewsRoutes)
   }
 }
 

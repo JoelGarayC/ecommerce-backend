@@ -13,6 +13,9 @@ export function responseCustomError(res: Response, err: any): void {
   res.status(err.statusCode ?? 500).json({
     status: 'error',
     statusCode: err.statusCode ?? 500,
-    message: err.message
+    message:
+      err.message === undefined || err.statusCode === undefined
+        ? 'Error en el servidor'
+        : err.message
   })
 }

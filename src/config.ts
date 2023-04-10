@@ -1,9 +1,14 @@
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
 import { type CorsOptions } from 'cors'
+import { type Express } from 'express'
+import { create } from 'express-handlebars'
+import handlebars from 'handlebars'
+import { baseSrc } from './utils/baseSrc'
 
 const { PORT = 8080, MONGODB_URI, NODE_ENV } = process.env
 const version = '/v1'
 const pathBase = `/api${version}`
-const developmentAllowedOrigins = ['*']
+const developmentAllowedOrigins = ['http://localhost:8000']
 const productionAllowedOrigins = [
   'https://ecommerce-backend-rho.vercel.app',
   'https://ecommerce-backend-33ja3purz-joelgarayc.vercel.app'
@@ -40,6 +45,20 @@ export const corsOptions: CorsOptions = {
       'The CORS policy for this site does not allow access from the specified Origin.'
     callback(new Error(msg), false)
   }
+}
+
+export function configHandlebars(app: Express): void {
+  const hbs = create({
+    extname: '.hbs',
+    defaultLayout: 'index',
+    handlebars: allowInsecurePrototypeAccess(handlebars),
+    layoutsDir: baseSrc + '/views/layouts',
+    partialsDir: baseSrc + '/views/partials'
+  })
+
+  app.engine('hbs', hbs.engine)
+  app.set('view engine', 'hbs')
+  app.set('views', baseSrc + '/views')
 }
 
 export { MONGODB_URI, NODE_ENV, PORT }

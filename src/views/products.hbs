@@ -1,0 +1,56 @@
+<section class='list-section'>
+  <h1>Lista de Productos desde la BD</h1>
+  <ul class='list-container'>
+    {{#if products}}
+      {{#each products}}
+        <li>
+          <picture>
+            {{#each this.thumbnails}}
+              <img src='{{this.path}}' alt='{{this.name}}' />
+            {{/each}}
+          </picture>
+          <div class='list-description'>
+            <h3>{{this.title}}</h3>
+            <p>{{this.description}}</p>
+          </div>
+          <div class='btn'>
+            <a class='btn-update' href='/products/{{this._id}}'>Ver detalles</a>
+          </div>
+
+        </li>
+      {{/each}}
+    {{else}}
+      <strong>No se ha encontrado ningun producto</strong>
+    {{/if}}
+  </ul>
+
+  <!-- Controles de navegación -->
+  <div class='list-controls'>
+    {{#if prevPage}}
+      <a
+        href='/products?page={{prevPage}}&limit={{limit}}&sort={{sort}}&query={{query}}'
+      >Anterior</a>
+    {{/if}}
+
+    {{#if nextPage}}
+      <a
+        href='/products?page={{nextPage}}&limit={{limit}}&sort={{sort}}&query={{query}}'
+      >Siguiente</a>
+    {{/if}}
+  </div>
+</section>
+
+<style>
+  .list-section { margin: 0 auto; max-width: 1200px; padding: 1rem; }
+  .list-section h1 { padding-bottom: 0.8rem; font-size: 1.5rem; } .list-section
+  a { padding-top: 1rem; display: inline-block; } .list-section a.btn-update {
+  padding: 0; } .list-container { display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+  .list-container li { background-color: #303030; border-radius: 0.5rem;
+  overflow: hidden; display: flex; flex-direction: column; justify-content:
+  space-between; } .list-container li h2 { font-size: 1.2em; } .list-description
+  { padding: 1rem; } .list-controls { padding: 0 1rem; display: flex;
+  justify-content: flex-end; gap: 1rem; } .btn { padding: 0 1rem 1rem 1rem;
+  display: flex; justify-content: flex-end; } .btn button { background-color:
+  #af511b; } .btn button.btn-update { background-color: #2a7f94; }
+</style>
