@@ -3,7 +3,7 @@ import { type CorsOptions } from 'cors'
 import { type Express } from 'express'
 import { create } from 'express-handlebars'
 import handlebars from 'handlebars'
-import { baseSrc } from './utils/baseSrc'
+import { baseUrl } from './utils/baseUrl'
 
 const { PORT = 8080, MONGODB_URI, NODE_ENV } = process.env
 const version = '/v1'
@@ -52,13 +52,13 @@ export function configHandlebars(app: Express): void {
     extname: '.hbs',
     defaultLayout: 'index',
     handlebars: allowInsecurePrototypeAccess(handlebars),
-    layoutsDir: baseSrc + '/views/layouts',
-    partialsDir: baseSrc + '/views/partials'
+    layoutsDir: baseUrl + '/src/views/layouts',
+    partialsDir: baseUrl + '/src/views/partials'
   })
 
   app.engine('hbs', hbs.engine)
   app.set('view engine', 'hbs')
-  app.set('views', baseSrc + '/views')
+  app.set('views', baseUrl + '/src/views')
 }
 
 export { MONGODB_URI, NODE_ENV, PORT }

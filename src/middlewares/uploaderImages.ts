@@ -1,6 +1,6 @@
 import { type Request } from 'express'
 import multer from 'multer'
-import { baseSrc } from '../utils/baseSrc'
+import { baseUrl } from '../utils/baseUrl'
 
 const storage = multer.diskStorage({
   destination: function (
@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     _file: Express.Multer.File,
     cb: (error: Error | null, destination: string) => void
   ) {
-    cb(null, `${baseSrc}/public/images`)
+    cb(null, `${baseUrl}/public/images`)
   },
   filename: function (
     _req: Request,

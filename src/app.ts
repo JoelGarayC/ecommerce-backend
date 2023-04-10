@@ -4,7 +4,7 @@ import { api, corsOptions } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 import viewsRoutes from './routes/views.routes'
-import { baseSrc } from './utils/baseSrc'
+import { baseUrl } from './utils/baseUrl'
 
 class App {
   public app: Express
@@ -24,7 +24,7 @@ class App {
     this.app.use(cors(corsOptions))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(express.static(baseSrc + '/public'))
+    this.app.use(express.static(baseUrl + 'public'))
   }
 
   private routes(): void {
