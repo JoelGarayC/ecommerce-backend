@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { type Request } from 'express'
+import { type IThumbnail } from '../types/IProduct'
 
 export interface UploadedImage {
   public_id: string
@@ -35,6 +36,22 @@ export async function uploadImagesCloud(
     return await Promise.all(uploadPromises)
   } catch (error) {
     console.log(error)
+    return []
+  }
+}
+
+export async function uploadImgs(req: Request): Promise<IThumbnail[]> {
+  try {
+    const uploadedImages = await uploadImagesCloud(req)
+    const dataImages = uploadedImages.map((image) => {
+      return {
+        name: image.public_id,
+        path: image.url
+      }
+    })
+    return dataImages
+  } catch (err) {
+    console.log(err)
     return []
   }
 }

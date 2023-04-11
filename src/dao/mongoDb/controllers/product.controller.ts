@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
-import { type IProduct, type IThumbnail } from '../../../types/IProduct'
+import { type IProduct } from '../../../types/IProduct'
 import { responseCustomError } from '../../../utils/CustomError'
-import { uploadImagesCloud } from '../../../utils/uploadImagesCloud'
+import { uploadImgs } from '../../../utils/uploadImagesCloud'
 import { imagesValidate } from '../../../utils/validations'
 import ProductManager from '../managers/ProductManager'
 
@@ -61,27 +61,9 @@ export async function addProduct(req: Request, res: Response): Promise<void> {
       stock: typeof stock === 'string' ? parseInt(stock) : stock,
       price: typeof price === 'string' ? parseInt(price) : price,
       category,
-      thumbnails: [],
+      thumbnails: (await uploadImgs(req)) ?? [],
       status: true
     }
-
-    async function uploadImgs(): Promise<IThumbnail[]> {
-      try {
-        const uploadedImages = await uploadImagesCloud(req)
-        const dataImages = uploadedImages.map((image) => {
-          return {
-            name: image.public_id,
-            path: image.url
-          }
-        })
-        return dataImages
-      } catch (err) {
-        console.log(err)
-        return []
-      }
-    }
-
-    console.log(await uploadImgs())
 
     const data = await product.addProduct(newProduct)
     res.status(200).json({
