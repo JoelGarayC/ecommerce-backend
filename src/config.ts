@@ -5,7 +5,15 @@ import { create } from 'express-handlebars'
 import handlebars from 'handlebars'
 import { join } from 'path'
 
-const { PORT = 8080, MONGODB_URI, NODE_ENV } = process.env
+const {
+  PORT = 8080,
+  MONGODB_URI,
+  NODE_ENV,
+  CLOUD_NAME,
+  CLOUD_API_KEY,
+  CLOUD_API_SECRET
+} = process.env
+
 const version = '/v1'
 const pathBase = `/api${version}`
 const developmentAllowedOrigins = [`http://localhost:${PORT}`]
@@ -61,4 +69,11 @@ export function configHandlebars(app: Express): void {
   app.set('views', join(__dirname, 'views'))
 }
 
-export { MONGODB_URI, NODE_ENV, PORT }
+export {
+  CLOUD_API_KEY,
+  CLOUD_API_SECRET,
+  CLOUD_NAME,
+  MONGODB_URI,
+  NODE_ENV,
+  PORT
+}

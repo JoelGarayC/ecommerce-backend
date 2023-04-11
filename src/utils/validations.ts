@@ -94,10 +94,36 @@ export async function validateIdCart(idCart: string): Promise<void> {
 }
 
 export function imagesValidate(req: Request): IThumbnail[] {
-  // if (!Array.isArray(req.files) && req.files === undefined) {
-  //   throw new CustomError('No se pudieron guardar las imágenes', 400)
-  // }
+  if (!Array.isArray(req.files)) return []
 
+  const dataImages = (): IThumbnail[] | undefined => {
+    if (Array.isArray(req.files)) {
+      return req.files?.map((file: any) => ({
+        name: file.originalname,
+        path: file.path
+      }))
+    } else {
+      return req.files?.thumbnails.map((file: any) => ({
+        name: file.originalname,
+        path: file.path
+      }))
+    }
+  }
+
+  const images = dataImages()?.map((image) => {
+    const startIndex = image.path.indexOf('images')
+    const imgPath = image.path.slice(startIndex).replace(/\\/g, '/')
+    const imagePath = `/${imgPath}`
+    return {
+      name: image.name,
+      path: imagePath
+    }
+  })
+
+  return images ?? []
+}
+
+export function saveImagesUrl(req: Request): IThumbnail[] {
   const dataImages = (): IThumbnail[] | undefined => {
     if (Array.isArray(req.files)) {
       return req.files?.map((file: any) => ({
