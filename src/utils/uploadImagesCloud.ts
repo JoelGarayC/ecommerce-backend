@@ -15,7 +15,10 @@ export const uploadImages = async (req: Request): Promise<UploadedImage[]> => {
     try {
       const result = await cloudinary.uploader.upload(image.path, {
         folder: 'ecommerce_coder', // Subir a una carpeta específica
-        overwrite: true // Sobrescribir imágenes existentes con el mismo nombre
+        overwrite: true, // Sobrescribir imágenes existentes con el mismo nombre
+        use_filename: true,
+        public_id: image.originalname,
+        unique_filename: false
       })
 
       const uploadedImage: UploadedImage = {
