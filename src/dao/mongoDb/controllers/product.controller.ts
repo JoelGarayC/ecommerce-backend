@@ -2,7 +2,6 @@ import { type Request, type Response } from 'express'
 import { type IProduct } from '../../../types/IProduct'
 import { responseCustomError } from '../../../utils/CustomError'
 import { uploadImgs } from '../../../utils/uploadImagesCloud'
-import { imagesValidate } from '../../../utils/validations'
 import ProductManager from '../managers/ProductManager'
 
 const product = new ProductManager()
@@ -90,7 +89,7 @@ export async function updateProductById(
       stock,
       price,
       category,
-      thumbnails: imagesValidate(req),
+      thumbnails: (await uploadImgs(req)) ?? [],
       status: true
     }
 
