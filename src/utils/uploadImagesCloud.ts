@@ -23,7 +23,7 @@ export async function uploadImagesCloud(
           } else {
             const uploadedImage: UploadedImage = {
               public_id: result.public_id,
-              url: result.url
+              url: result.secure_url
             }
             resolve(uploadedImage)
           }
