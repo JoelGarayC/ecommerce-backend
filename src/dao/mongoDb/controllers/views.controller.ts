@@ -39,3 +39,11 @@ export async function getProductsById(
     responseCustomError(res, err)
   }
 }
+
+export async function addProduct(_req: Request, res: Response): Promise<void> {
+  try {
+    res.render('addProduct')
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}

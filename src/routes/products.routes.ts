@@ -1,4 +1,4 @@
-import express from 'express'
+import { Router } from 'express'
 import {
   addProduct,
   deleteProductById,
@@ -8,7 +8,7 @@ import {
 } from '../dao/mongoDb/controllers/product.controller'
 import { uploader } from '../middlewares/uploaderImages'
 
-const router = express.Router()
+const router = Router()
 
 router
   .route('/')

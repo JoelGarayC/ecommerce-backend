@@ -57,8 +57,8 @@ export async function addProduct(req: Request, res: Response): Promise<void> {
       title,
       description,
       code,
-      stock: parseInt(stock),
-      price: parseInt(price),
+      stock: typeof stock === 'string' ? parseInt(stock) : stock,
+      price: typeof price === 'string' ? parseInt(price) : price,
       category,
       thumbnails: imagesValidate(req),
       status: true

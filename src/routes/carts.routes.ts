@@ -1,4 +1,4 @@
-import express from 'express'
+import { Router } from 'express'
 import {
   addCart,
   addProductToCart,
@@ -10,7 +10,7 @@ import {
   updateProductsToCart
 } from '../dao/mongoDb/controllers/cart.controller'
 
-const router = express.Router()
+const router = Router()
 
 router.route('/').get(getCarts).post(addCart)
 

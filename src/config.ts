@@ -8,7 +8,7 @@ import { join } from 'path'
 const { PORT = 8080, MONGODB_URI, NODE_ENV } = process.env
 const version = '/v1'
 const pathBase = `/api${version}`
-const developmentAllowedOrigins = ['http://localhost:8000']
+const developmentAllowedOrigins = [`http://localhost:${PORT}`]
 const productionAllowedOrigins = [
   'https://ecommerce-backend-rho.vercel.app',
   'https://ecommerce-backend-33ja3purz-joelgarayc.vercel.app'

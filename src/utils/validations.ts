@@ -18,7 +18,11 @@ export function validateFields(product: IProduct): void {
   ]
 
   for (const field of requiredFields) {
-    if (product[field] === undefined || product[field] === null) {
+    if (
+      product[field] === undefined ||
+      product[field] === null ||
+      product[field] === ''
+    ) {
       throw new CustomError(`El campo: ${field} es requerido`, 400)
     }
   }
