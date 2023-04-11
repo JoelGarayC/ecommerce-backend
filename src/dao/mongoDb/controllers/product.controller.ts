@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { type IProduct } from '../../../types/IProduct'
 import { responseCustomError } from '../../../utils/CustomError'
-import { uploadImgs } from '../../../utils/uploadImagesCloud'
+import { uploadImages } from '../../../utils/uploadImagesCloud'
 import ProductManager from '../managers/ProductManager'
 
 const product = new ProductManager()
@@ -60,7 +60,7 @@ export async function addProduct(req: Request, res: Response): Promise<void> {
       stock: typeof stock === 'string' ? parseInt(stock) : stock,
       price: typeof price === 'string' ? parseInt(price) : price,
       category,
-      thumbnails: (await uploadImgs(req)) ?? [],
+      thumbnails: (await uploadImages(req)) ?? [],
       status: true
     }
 
@@ -89,7 +89,7 @@ export async function updateProductById(
       stock,
       price,
       category,
-      thumbnails: (await uploadImgs(req)) ?? [],
+      thumbnails: (await uploadImages(req)) ?? [],
       status: true
     }
 
