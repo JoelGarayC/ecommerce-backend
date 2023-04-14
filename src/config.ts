@@ -19,7 +19,7 @@ const pathBase = `/api${version}`
 const developmentAllowedOrigins = [`http://localhost:${PORT}`]
 const productionAllowedOrigins = [
   'https://ecommerce-backend-rho.vercel.app',
-  'https://ecommerce-backend-33ja3purz-joelgarayc.vercel.app'
+  'https://ecommerce-five-wine.vercel.app'
 ]
 
 export const api = {
