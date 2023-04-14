@@ -18,7 +18,8 @@ export const uploadImages = async (req: Request): Promise<UploadedImage[]> => {
         overwrite: true, // Sobrescribir imágenes existentes con el mismo nombre
         use_filename: true,
         public_id: image.originalname,
-        unique_filename: false
+        unique_filename: false,
+        format: 'webp'
       })
 
       const uploadedImage: UploadedImage = {
