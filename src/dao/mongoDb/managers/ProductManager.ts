@@ -20,7 +20,6 @@ class ProductManager {
   }: ProductProps): Promise<PaginateResult<IProduct>> {
     const queryPag =
       query.length > 0 ? { category: query.toLocaleLowerCase() } : {}
-    console.log(queryPag)
     const options = {
       page: page.length > 0 ? parseInt(page) : 1,
       limit: limit.length > 0 ? parseInt(limit) : 10,
