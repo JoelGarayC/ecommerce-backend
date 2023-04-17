@@ -15,13 +15,15 @@ const ProductSchema = new Schema<IProduct>({
   },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  thumbnails: [
-    {
-      name: String,
-      path: String
-    }
-  ],
-
+  thumbnails: {
+    type: [
+      {
+        name: String,
+        path: String
+      }
+    ],
+    default: []
+  },
   code: {
     type: String,
     required: true,

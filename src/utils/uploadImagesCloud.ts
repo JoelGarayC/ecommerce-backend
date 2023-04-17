@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { type Request } from 'express'
+import { type IProduct, type IThumbnail } from '../types/IProduct'
 
 export interface UploadedImage {
   name: string
@@ -39,4 +40,28 @@ export const uploadImages = async (req: Request): Promise<UploadedImage[]> => {
     )
 
   return uploadedImages
+}
+
+export async function buildUpdateProduct(
+  title: string,
+  description: string,
+  code: string,
+  stock: number,
+  price: number,
+  category: string,
+  thumbnails: IThumbnail[]
+): Promise<IProduct> {
+  const updateProduct: IProduct = {
+    title,
+    description,
+    code,
+    stock: typeof stock === 'string' ? parseInt(stock) : stock,
+    price: typeof price === 'string' ? parseInt(price) : price,
+    category,
+    status: true
+  }
+  if (thumbnails.length > 0) {
+    updateProduct.thumbnails = thumbnails
+  }
+  return updateProduct
 }

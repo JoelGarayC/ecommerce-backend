@@ -1,4 +1,5 @@
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
+import cloudinary from 'cloudinary'
 import { type CorsOptions } from 'cors'
 import { type Express } from 'express'
 import { create } from 'express-handlebars'
@@ -73,11 +74,12 @@ export function configHandlebars(app: Express): void {
   app.set('views', join(__dirname, 'views'))
 }
 
-export {
-  CLOUD_API_KEY,
-  CLOUD_API_SECRET,
-  CLOUD_NAME,
-  MONGODB_URI,
-  NODE_ENV,
-  PORT
+export function configCloudinary(): void {
+  cloudinary.v2.config({
+    cloud_name: CLOUD_NAME,
+    api_key: CLOUD_API_KEY,
+    api_secret: CLOUD_API_SECRET
+  })
 }
+
+export { MONGODB_URI, NODE_ENV, PORT }

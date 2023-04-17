@@ -1,7 +1,10 @@
 import { type Request, type Response } from 'express'
 import { type IProduct } from '../../../types/IProduct'
 import { responseCustomError } from '../../../utils/CustomError'
-import { uploadImages } from '../../../utils/uploadImagesCloud'
+import {
+  buildUpdateProduct,
+  uploadImages
+} from '../../../utils/uploadImagesCloud'
 import ProductManager from '../managers/ProductManager'
 
 const product = new ProductManager()
@@ -82,16 +85,16 @@ export async function updateProductById(
   const { pid } = req.params
 
   try {
-    const updateProduct: IProduct = {
+    const images = await uploadImages(req)
+    const updateProduct = await buildUpdateProduct(
       title,
       description,
       code,
       stock,
       price,
       category,
-      thumbnails: (await uploadImages(req)) ?? [],
-      status: true
-    }
+      images
+    )
 
     const data = await product.updateProduct(pid, updateProduct)
     res.status(200).json({
