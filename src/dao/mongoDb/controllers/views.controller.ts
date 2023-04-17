@@ -9,6 +9,9 @@ export async function getProducts(req: Request, res: Response): Promise<void> {
   const page = req.query.page as string
   const sort = req.query.sort as string
   const query = req.query.query as string
+
+  console.log(query)
+
   try {
     const data = await product.getProducts({ limit, page, sort, query })
 

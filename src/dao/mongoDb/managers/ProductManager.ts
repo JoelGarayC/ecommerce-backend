@@ -18,7 +18,9 @@ class ProductManager {
     sort = '',
     query = ''
   }: ProductProps): Promise<PaginateResult<IProduct>> {
-    const queryPag = query.length > 0 ? { category: query } : ''
+    const queryPag =
+      query.length > 0 ? { category: query.toLocaleLowerCase() } : {}
+    console.log(queryPag)
     const options = {
       page: page.length > 0 ? parseInt(page) : 1,
       limit: limit.length > 0 ? parseInt(limit) : 10,
@@ -30,10 +32,10 @@ class ProductManager {
     const links = {
       prevUrl: `${api.url}/products?page=${options.page - 1}&limit=${
         options.limit
-      }&sort=${sort}&query=${query}`,
+      }&sort=${sort}&query=${query.toLocaleLowerCase()}`,
       nextUrl: `${api.url}/products?page=${options.page + 1}&limit=${
         options.limit
-      }&sort=${sort}&query=${query}`
+      }&sort=${sort}&query=${query.toLocaleLowerCase()}`
     }
 
     const data = { ...response, ...links }
