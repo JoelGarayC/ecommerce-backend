@@ -1,0 +1,58 @@
+<section class='chat-section'>
+  <h1> Chat con Mongodb + SocketIO</h1>
+  <form id='form-message'>
+    <input
+      type='email'
+      name='email'
+      id='email'
+      placeholder='Escribe tu email'
+      value=''
+    />
+    <input
+      type='text'
+      name='message'
+      id='message'
+      placeholder='Escribe tu mensaje'
+    />
+    <button type='submit'>Enviar</button>
+  </form>
+  <ul id='messages'>
+    {{#each messages}}
+      <li>
+        <span>{{this.user}}</span>
+        <p>{{this.message}}</p>
+      </li>
+    {{/each}}
+  </ul>
+</section>
+
+<style>
+  .chat-section { padding: 1rem; display: flex; flex-direction: column; gap:
+  0.5rem; max-width: 600px; margin: 0 auto; } .chat-section ul { display: flex;
+  flex-direction: column; gap: 0.5rem; } .chat-section li { width: fit-content;
+  border-radius: 0.5rem; list-style: none; padding: 0.5rem; background-color:
+  #dce3e4; color: rgb(39, 39, 39); display: flex; flex-direction: column;
+  justify-content: start; } .chat-section li span { font-size: 0.8rem; }
+  .chat-section li.mensaje-propio { align-self: end; background-color: #99e0e5;
+  color: rgb(39, 39, 39); justify-content: end; }
+</style>
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+  const socket = io(); console.log("Connect Socket io");const user =
+  sessionStorage.getItem('usuario'); if (user) { const campoInput =
+  document.getElementById('email'); campoInput.value = user; } ; const
+  formMessage = document.getElementById("form-message");
+  formMessage.addEventListener("submit", (e) => { e.preventDefault(); const
+  email = document.getElementsByName('email')[0]?.value; const message =
+  document.getElementsByName('message')[0]?.value; if (email && message) {
+  sessionStorage.setItem('usuario', email); const msg = { user: email, message }
+  socket.emit('chat', msg); } }); const listContainer =
+  document.querySelector("#messages"); socket.on('update-chat', function (data)
+  { listContainer.innerHTML = ""; data?.forEach((msg) => { const li =
+  document.createElement("li"); const userLocal =
+  sessionStorage.getItem('usuario'); if (msg.user === userLocal) {
+  li.classList.add('mensaje-propio'); } li.innerHTML = `
+  <span>${msg.user}</span> <p>${msg.message}</p> `;
+  listContainer.appendChild(li); }); });
+</script>

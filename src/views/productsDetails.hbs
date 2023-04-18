@@ -11,7 +11,6 @@
           <strong>No hay imagenes</strong>
         {{/if}}
       </picture>
-
       <div class='list-description'>
         <h3>{{data.title}}</h3>
         <p>{{data.description}}</p>
@@ -33,13 +32,6 @@
   </li>
 </div>
 
-<script>
-  const btn = document.getElementById('btn-add-cart');
-  btn.addEventListener('click', (e) => { const idProd =
-  btn.getAttribute('data-product-id'); alert(`Producto seleccionado con id:
-  ${idProd}`); })
-</script>
-
 <style>
   .product-details { max-width: 550px; margin: 0 auto; padding: 1rem;
   }.product-details picture { border-radius: 0.5rem; } .product-details h1
@@ -48,3 +40,10 @@
   justify-content:flex-end; } .btn button { background-color: #af511b; } .btn
   button.btn-update{ background-color: #2a7f94; }
 </style>
+
+<script>
+  const btn = document.getElementById('btn-add-cart');
+  btn.addEventListener('click', (e) => { const idProd =
+  btn.getAttribute('data-product-id'); alert(`Producto seleccionado con id:
+  ${idProd}`); })
+</script>

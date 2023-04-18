@@ -1,24 +1,21 @@
-import { Router, type Request, type Response } from 'express'
+import { Router } from 'express'
 
 import {
   addProduct,
+  chat,
+  getCartId,
   getProducts,
-  getProductsById
+  getProductsById,
+  homePage
 } from '../dao/mongoDb/controllers/views.controller'
-import { responseCustomError } from '../utils/CustomError'
 
 const router = Router()
 
 router.get('/products', getProducts)
 router.get('/products/:pid', getProductsById)
 router.get('/addProduct', addProduct)
-
-router.get('/', async function (_req: Request, res: Response): Promise<void> {
-  try {
-    res.redirect('/products')
-  } catch (err) {
-    responseCustomError(res, err)
-  }
-})
+router.get('/carts/:cid', getCartId)
+router.get('/chat', chat)
+router.get('/', homePage)
 
 export default router

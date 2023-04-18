@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import { type ICart } from '../../../types/ICart'
 
-const CartSchema: Schema = new Schema<ICart>({
+const CartSchema = new Schema<ICart>({
   products: [
     {
       product: {
@@ -13,4 +13,4 @@ const CartSchema: Schema = new Schema<ICart>({
   ]
 })
 
-export const Cart = mongoose.model<ICart>('Cart', CartSchema)
+export const Cart = model<ICart>('Cart', CartSchema)

@@ -19,14 +19,12 @@
           <div class='btn'>
             <a class='btn-update' href='/products/{{this._id}}'>Ver detalles</a>
           </div>
-
         </li>
       {{/each}}
     {{else}}
       <strong>No se ha encontradon productos</strong>
     {{/if}}
   </ul>
-
   <!-- Controles de navegación -->
   <div class='list-controls'>
     {{#if prevPage}}
@@ -34,7 +32,6 @@
         href='/products?page={{prevPage}}&limit={{limit}}&sort={{sort}}&query={{query}}'
       >Anterior</a>
     {{/if}}
-
     {{#if nextPage}}
       <a
         href='/products?page={{nextPage}}&limit={{limit}}&sort={{sort}}&query={{query}}'
