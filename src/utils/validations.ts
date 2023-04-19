@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { Cart } from '../dao/mongoDb/models/Cart'
 import { Product } from '../dao/mongoDb/models/Product'
 import { type IProduct, type IThumbnail } from '../types/IProduct'
+import { type IUser } from '../types/IUser'
 import { CustomError } from './CustomError'
 const { ObjectId } = mongoose.Types
 
@@ -165,3 +166,33 @@ export function saveImagesUrl(req: Request): IThumbnail[] {
 //     )
 //   }
 // }
+
+export function validateFieldsUser(user: IUser): void {
+  const requiredFields: Array<keyof IUser> = [
+    'firstName',
+    'lastName',
+    'email',
+    'password',
+    'role'
+  ]
+
+  for (const field of requiredFields) {
+    if (
+      user[field] === undefined ||
+      user[field] === null ||
+      user[field] === ''
+    ) {
+      throw new CustomError(`El campo: ${field} es requerido`, 400)
+    }
+  }
+}
+
+export function validateTypeUser(user: IUser): void {
+  const validateFieldsString: Array<keyof IUser> = ['firstName', 'lastName']
+
+  for (const field of validateFieldsString) {
+    if (typeof user[field] !== 'string') {
+      throw new CustomError(`El campo: ${field} deber ser de tipo string`, 400)
+    }
+  }
+}

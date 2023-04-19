@@ -68,7 +68,7 @@ export async function addProduct(req: Request, res: Response): Promise<void> {
     }
 
     const data = await product.addProduct(newProduct)
-    res.status(200).json({
+    res.status(201).json({
       status: 'success',
       message: data
     })
