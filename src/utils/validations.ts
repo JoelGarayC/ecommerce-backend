@@ -196,3 +196,17 @@ export function validateTypeUser(user: IUser): void {
     }
   }
 }
+
+export function validateFieldsUserLogin(user: IUser): void {
+  const requiredFields: Array<keyof IUser> = ['email', 'password', 'role']
+
+  for (const field of requiredFields) {
+    if (
+      user[field] === undefined ||
+      user[field] === null ||
+      user[field] === ''
+    ) {
+      throw new CustomError(`El campo: ${field} es requerido`, 400)
+    }
+  }
+}

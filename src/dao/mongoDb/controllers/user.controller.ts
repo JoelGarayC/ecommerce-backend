@@ -22,3 +22,16 @@ export async function register(req: Request, res: Response): Promise<void> {
     responseCustomError(res, err)
   }
 }
+
+export async function login(req: Request, res: Response): Promise<void> {
+  const { email, password } = req.body
+  try {
+    const data = await user.login({ email, password })
+    res.status(201).json({
+      status: 'success',
+      token: data.token
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}

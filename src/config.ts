@@ -13,7 +13,8 @@ const {
   CLOUD_NAME,
   CLOUD_API_KEY,
   CLOUD_API_SECRET,
-  JWT_SECRET
+  JWT_SECRET,
+  JWT_REFRESH
 } = process.env
 
 const version = '/v1'
@@ -83,4 +84,4 @@ export function configCloudinary(): void {
   })
 }
 
-export { JWT_SECRET, MONGODB_URI, NODE_ENV, PORT }
+export { JWT_REFRESH, JWT_SECRET, MONGODB_URI, NODE_ENV, PORT }

@@ -1,8 +1,12 @@
-import { type IUser, type ReturnToken } from '../../../types/IUser'
+import { compare } from 'bcryptjs'
+import { type IUser } from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
-import { generateToken } from '../../../utils/generateToken'
+import { generateToken, type ReturnToken } from '../../../utils/generateToken'
 import { hashPassword } from '../../../utils/hashPassword'
-import { validateFieldsUser } from '../../../utils/validations'
+import {
+  validateFieldsUser,
+  validateFieldsUserLogin
+} from '../../../utils/validations'
 import { User } from '../models/User'
 
 class UserManager {
@@ -19,14 +23,33 @@ class UserManager {
       lastName: user.lastName,
       email: user.email,
       password: await hashPassword(user.password),
-      role: user.role?.length > 0 ? user.role : 'user'
+      role: user.role !== null ? user.role : 'user'
     })
     const userSave = await newUser.save()
 
     // Generar un token JWT para el nuevo usuario
     const token = await generateToken(userSave)
 
-    return { message: 'Usuario creado exitosamente', token }
+    return token
+  }
+
+  async login(user: IUser): Promise<ReturnToken> {
+    validateFieldsUserLogin(user)
+
+    const userData = await User.findOne({ email: user.email })
+    if (userData === null) {
+      throw new CustomError('Correo electrónico no encontrado!', 400)
+    }
+
+    const match = await compare(user.password, userData.password)
+    if (!match) {
+      throw new CustomError('Contraseña incorrecta', 400)
+    }
+
+    // Generar un token JWT para el nuevo usuario
+    const token = await generateToken(userData)
+
+    return token
   }
 }
 

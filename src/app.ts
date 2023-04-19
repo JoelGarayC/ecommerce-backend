@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { type Express } from 'express'
 import { join } from 'path'
@@ -22,6 +23,7 @@ class App {
 
   private middlewares(): void {
     this.app.use(cors(corsOptions))
+    this.app.use(cookieParser())
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.static(join(__dirname, '../public')))
