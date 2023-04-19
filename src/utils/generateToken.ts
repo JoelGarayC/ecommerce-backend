@@ -5,7 +5,8 @@ import { type IUser } from '../types/IUser'
 export async function generateToken(user: IUser): Promise<string> {
   const token = sign(
     { idUser: user._id, role: user.role },
-    JWT_SECRET as string
+    JWT_SECRET as string,
+    { expiresIn: '24h' }
   )
   return token
 }

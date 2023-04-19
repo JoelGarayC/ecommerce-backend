@@ -16,7 +16,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     })
     res.status(201).json({
       status: 'success',
-      ...data
+      token: data.token
     })
   } catch (err) {
     responseCustomError(res, err)
