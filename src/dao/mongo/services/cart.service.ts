@@ -1,10 +1,16 @@
+import type mongoose from 'mongoose'
 import { type ICart, type ICartItem } from '../../../types/ICart'
 import { CustomError } from '../../../utils/CustomError'
 import { validateIdCart, validateIdProduct } from '../../../utils/validations'
 import { Cart } from '../models/Cart'
 import { Product } from '../models/Product'
 
-class CartManager {
+interface ReturnCart {
+  message: string
+  id: mongoose.Types.ObjectId
+}
+
+class CartService {
   async getCarts(): Promise<ICart[]> {
     const data = await Cart.find().lean()
     return data
@@ -23,12 +29,12 @@ class CartManager {
     return cartById
   }
 
-  async addCart(): Promise<string> {
+  async addCart(): Promise<ReturnCart> {
     const newCart = new Cart({
       products: []
     })
-    await newCart.save()
-    return 'Carrito agregado con éxito: []'
+    const res = await newCart.save()
+    return { message: 'Carrito agregado con éxito: []', id: res._id }
   }
 
   async addProduct(idCart: string, idProduct: string): Promise<string> {
@@ -194,4 +200,4 @@ class CartManager {
   }
 }
 
-export default CartManager
+export default CartService

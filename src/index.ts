@@ -2,7 +2,7 @@ import 'dotenv/config'
 import displayRoutes from 'express-routemap'
 import http from 'http'
 import App from './app'
-import { PORT, configCloudinary, configHandlebars } from './config'
+import { PORT, api, configCloudinary, configHandlebars } from './config'
 import { initChat } from './utils/chat'
 
 const application = new App().app
@@ -16,6 +16,6 @@ configHandlebars(application)
 initChat(server)
 
 server.listen(PORT, () => {
-  console.log(`Server is listening on http://localhost:${PORT}`)
+  console.log(`Server is listening on ${api.urlBase}`)
   displayRoutes(application)
 })

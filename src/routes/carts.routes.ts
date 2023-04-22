@@ -8,7 +8,7 @@ import {
   getCarts,
   updateProductToCart,
   updateProductsToCart
-} from '../dao/mongoDb/controllers/cart.controller'
+} from '../dao/mongo/controllers/cart.controller'
 
 const router = Router()
 

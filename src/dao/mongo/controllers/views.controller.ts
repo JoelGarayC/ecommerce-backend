@@ -1,12 +1,14 @@
 import { type Request, type Response } from 'express'
 import { responseCustomError } from '../../../utils/CustomError'
-import CartManager from '../managers/CartManager'
-import ProductManager from '../managers/ProductManager'
+import CartService from '../services/cart.service'
+import ProductService from '../services/product.service'
+import UserService from '../services/user.service'
 
-const product = new ProductManager()
-const cart = new CartManager()
+const product = new ProductService()
+const cart = new CartService()
+const user = new UserService()
 
-export async function getProducts(req: Request, res: Response): Promise<void> {
+export async function getProducts(req: any, res: Response): Promise<void> {
   const limit = req.query.limit as string
   const page = req.query.page as string
   const sort = req.query.sort as string
@@ -74,7 +76,35 @@ export async function chat(_req: Request, res: Response): Promise<void> {
 
 export async function homePage(_req: Request, res: Response): Promise<void> {
   try {
-    res.redirect('/products')
+    res.redirect('/login')
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function login(_req: Request, res: Response): Promise<void> {
+  try {
+    res.render('login')
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function register(_req: Request, res: Response): Promise<void> {
+  try {
+    res.render('register')
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function profile(req: any, res: Response): Promise<void> {
+  const { uid } = req.user
+  try {
+    const data = await user.getUserByID(uid)
+    res.render('profile', {
+      data
+    })
   } catch (err) {
     responseCustomError(res, err)
   }

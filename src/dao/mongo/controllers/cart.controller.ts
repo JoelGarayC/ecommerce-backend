@@ -1,8 +1,8 @@
 import { type Request, type Response } from 'express'
 import { responseCustomError } from '../../../utils/CustomError'
-import CartManager from '../managers/CartManager'
+import CartService from '../services/cart.service'
 
-const cart = new CartManager()
+const cart = new CartService()
 
 export async function getCarts(_req: Request, res: Response): Promise<void> {
   try {
@@ -35,7 +35,7 @@ export async function addCart(_req: Request, res: Response): Promise<void> {
     const data = await cart.addCart()
     res.status(200).json({
       status: 'success',
-      message: data
+      message: data.message
     })
   } catch (err) {
     responseCustomError(res, err)

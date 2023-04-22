@@ -1,7 +1,7 @@
 import { type IMessage } from '../../../types/IMessage'
 import { Message } from '../models/Message'
 
-class MessageManager {
+class MessageService {
   async getMessages(): Promise<IMessage[]> {
     const messages = await Message.find().lean()
     return messages
@@ -17,4 +17,4 @@ class MessageManager {
   }
 }
 
-export default MessageManager
+export default MessageService

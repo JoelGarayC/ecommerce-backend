@@ -5,9 +5,9 @@ import {
   buildUpdateProduct,
   uploadImages
 } from '../../../utils/uploadImagesCloud'
-import ProductManager from '../managers/ProductManager'
+import ProductService from '../services/product.service'
 
-const product = new ProductManager()
+const product = new ProductService()
 
 export async function getProducts(req: Request, res: Response): Promise<void> {
   const limit = req.query.limit as string

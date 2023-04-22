@@ -1,0 +1,22 @@
+{{#if data}}
+  <div>
+    <h1>Perfil del usuario</h1>
+    <p>Nombre: {{data.firstName}}</p>
+    <p>Apellido: {{data.lastName}}</p>
+    <p>Correo: {{data.email}}</p>
+    <p>Edad: {{data.age}}</p>
+    <p>Rol: {{data.role}}</p>
+
+    <form action='/api/v1/sessions/logout' method='POST'>
+      <button type='submit'>Cerrar sesión</button>
+    </form>
+  </div>
+  <div>
+    <a href='/products'>Ir a Productos</a>
+  </div>
+{{else}}
+  <div>
+    <p>No tiene acceso a esta pag . Inicie sesión</p>
+    <a href='/login'>Iniciar sesión</a>
+  </div>
+{{/if}}

@@ -5,15 +5,16 @@ import {
   getProductById,
   getProducts,
   updateProductById
-} from '../dao/mongoDb/controllers/product.controller'
+} from '../dao/mongo/controllers/product.controller'
 import { uploader } from '../middlewares/uploaderImages'
+import verifyToken from '../middlewares/verifyToken'
 
 const router = Router()
 
 router
   .route('/')
   .get(getProducts)
-  .post(uploader.array('thumbnails'), addProduct)
+  .post(uploader.array('thumbnails'), verifyToken(['admin']), addProduct)
 
 router
   .route('/:pid')

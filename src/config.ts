@@ -14,37 +14,30 @@ const {
   CLOUD_API_KEY,
   CLOUD_API_SECRET,
   JWT_SECRET,
-  JWT_REFRESH
+  PERSISTENCE,
+  URL_FRONTEND,
+  URL_BACKEND
 } = process.env
 
 const version = '/v1'
 const pathBase = `/api${version}`
-const developmentAllowedOrigins = [
-  `http://localhost:${PORT}`,
-  '*',
-  'http://127.0.0.1:5173',
-  'http://localhost:5173'
-]
-const productionAllowedOrigins = [
-  'https://ecommerce-backend-rho.vercel.app',
-  'https://ecommerce-five-wine.vercel.app'
-]
+export const urlBase =
+  (NODE_ENV as string) === 'production'
+    ? (URL_BACKEND as string)
+    : 'http://localhost'
 
 export const api = {
   version,
-  pathBase: `/api${version}`,
-  url: `http://localhost:${PORT}${pathBase}`
+  pathBase,
+  urlBase: `${urlBase}:${PORT}`,
+  url: `${urlBase}:${PORT}${pathBase}`
 }
 
-function whitheList(): string[] {
-  let allowedOrigins: string[]
-  if (NODE_ENV === 'production') {
-    allowedOrigins = productionAllowedOrigins
-    return allowedOrigins
-  } else {
-    allowedOrigins = developmentAllowedOrigins
-    return allowedOrigins
-  }
+let allowedOrigins: string[] = []
+if (NODE_ENV === 'production') {
+  allowedOrigins = [urlBase, api.urlBase, URL_FRONTEND as string]
+} else {
+  allowedOrigins = [urlBase, api.urlBase]
 }
 
 export const corsOptions: CorsOptions = {
@@ -53,14 +46,15 @@ export const corsOptions: CorsOptions = {
       callback(null, true)
       return
     }
-    if (whitheList().includes(origin)) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true)
       return
     }
     const msg =
       'The CORS policy for this site does not allow access from the specified Origin.'
     callback(new Error(msg), false)
-  }
+  },
+  credentials: true
 }
 
 export function configHandlebars(app: Express): void {
@@ -79,10 +73,10 @@ export function configHandlebars(app: Express): void {
 
 export function configCloudinary(): void {
   cloudinary.v2.config({
-    cloud_name: CLOUD_NAME,
-    api_key: CLOUD_API_KEY,
-    api_secret: CLOUD_API_SECRET
+    cloud_name: CLOUD_NAME as string,
+    api_key: CLOUD_API_KEY as string,
+    api_secret: CLOUD_API_SECRET as string
   })
 }
 
-export { JWT_REFRESH, JWT_SECRET, MONGODB_URI, NODE_ENV, PORT }
+export { JWT_SECRET, MONGODB_URI, NODE_ENV, PERSISTENCE, PORT }

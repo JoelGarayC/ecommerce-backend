@@ -1,23 +1,29 @@
 import { type NextFunction, type Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { JWT_SECRET } from '../config'
+import { type UserRole } from '../types/IUser'
 
-function verifyToken(req: any, res: Response, next: NextFunction): void {
-  try {
-    let token = req.headers.authorization
-    if (token === undefined) {
-      throw new Error('No se ha proporcionado un token')
+function verifyToken(role: UserRole[]) {
+  return (req: any, res: Response, next: NextFunction): void => {
+    try {
+      const token = req?.cookies?.token
+      if (token === undefined) {
+        throw new Error('Inicia sesión en /login')
+      }
+      const payload = verify(token, JWT_SECRET as string)
+      req.user = payload // envia el payload al siguiente middleware
+
+      if (!role.includes(req.user.role)) {
+        throw new Error('No autorizado, es nesesario un rol más específico')
+      }
+      next()
+    } catch (err: any) {
+      res.status(401).json({
+        status: 'error',
+        statusCode: 401,
+        message: errorTokens(err.message)
+      })
     }
-    token = token?.replace('Bearer ', '')
-    const payload = verify(token, JWT_SECRET as string)
-    req.user = payload // envia el payload al siguiente middleware
-    next()
-  } catch (err: any) {
-    res.status(401).json({
-      status: 'error',
-      statusCode: 401,
-      message: errorTokens(err.message)
-    })
   }
 }
 
@@ -37,8 +43,6 @@ function errorTokens(message: string): string {
       return 'Token no activo'
     case 'jwt payload is invalid':
       return 'Payload inválido'
-    case 'No Bearer':
-      return 'Utilice el prefijo Bearer'
     default:
       return message
   }

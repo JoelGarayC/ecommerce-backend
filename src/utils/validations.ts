@@ -1,7 +1,7 @@
 import { type Request } from 'express'
 import mongoose from 'mongoose'
-import { Cart } from '../dao/mongoDb/models/Cart'
-import { Product } from '../dao/mongoDb/models/Product'
+import { Cart } from '../dao/mongo/models/Cart'
+import { Product } from '../dao/mongo/models/Product'
 import { type IProduct, type IThumbnail } from '../types/IProduct'
 import { type IUser } from '../types/IUser'
 import { CustomError } from './CustomError'
@@ -79,7 +79,10 @@ export async function validateIdProduct(idProduct: string): Promise<void> {
 
   const productById = await Product.findById(idProduct)
   if (productById === null) {
-    throw new CustomError(`No se encontró el ID: ${idProduct}`, 404)
+    throw new CustomError(
+      `No se encontró el producto con ID: ${idProduct} `,
+      404
+    )
   }
 }
 

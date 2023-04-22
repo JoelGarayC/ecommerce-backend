@@ -11,7 +11,7 @@ import {
 import { Product } from '../models/Product'
 const { ObjectId } = mongoose.Types
 
-class ProductManager {
+class ProductService {
   async getProducts({
     page = '',
     limit = '',
@@ -131,4 +131,4 @@ class ProductManager {
   }
 }
 
-export default ProductManager
+export default ProductService

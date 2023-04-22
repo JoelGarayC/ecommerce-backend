@@ -1,9 +1,6 @@
 import { compare } from 'bcryptjs'
-import {
-  type IUser,
-  type IUserCurrent,
-  type IUserToken
-} from '../../../types/IUser'
+import { type Response } from 'express'
+import { type IUser, type IUserToken } from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
 import { generateToken, type ReturnToken } from '../../../utils/generateToken'
 import { hashPassword } from '../../../utils/hashPassword'
@@ -13,7 +10,7 @@ import {
 } from '../../../utils/validations'
 import { User } from '../models/User'
 
-class UserManager {
+class SessionService {
   async register(user: IUser): Promise<ReturnToken> {
     validateFieldsUser(user)
 
@@ -33,12 +30,13 @@ class UserManager {
 
     // Generar un token JWT para el nuevo usuario
     const token = await generateToken(userSave)
-
     return token
   }
 
   async login(user: IUser): Promise<ReturnToken> {
     validateFieldsUserLogin(user)
+
+    console.log(user)
 
     const userData = await User.findOne({ email: user.email })
     if (userData === null) {
@@ -52,22 +50,21 @@ class UserManager {
 
     // Generar un token JWT para el usuario
     const token = await generateToken(userData)
-
     return token
   }
 
-  async current({ uid, role }: IUserToken): Promise<IUserCurrent> {
-    const user = await User.findById(uid)
+  async current({ uid }: IUserToken): Promise<IUser> {
+    const user = await User.findById(uid).populate('cart')
     if (user === null) {
       throw new CustomError('Usuario no encontrado', 403)
     }
-    return {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role
-    }
+    return user
+  }
+
+  async logout(res: Response): Promise<string> {
+    res.clearCookie('token')
+    return 'sesión cerrada'
   }
 }
 
-export default UserManager
+export default SessionService

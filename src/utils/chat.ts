@@ -1,8 +1,8 @@
 import type http from 'http'
 import { Server } from 'socket.io'
-import MessageManager from '../dao/mongoDb/managers/MessageManager'
+import MessageService from '../dao/mongo/services/message.service'
 
-const message = new MessageManager()
+const message = new MessageService()
 
 export const initChat = (server: http.Server): void => {
   const io = new Server(server)
