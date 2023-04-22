@@ -36,8 +36,6 @@ class SessionService {
   async login(user: IUser): Promise<ReturnToken> {
     validateFieldsUserLogin(user)
 
-    console.log(user)
-
     const userData = await User.findOne({ email: user.email })
     if (userData === null) {
       throw new CustomError('Correo electrónico no existe!', 403)
