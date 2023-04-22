@@ -14,10 +14,16 @@ export async function register(req: Request, res: Response): Promise<void> {
       password,
       role
     })
-    res.status(201).json({
-      status: 'success',
-      token: data.token
-    })
+    res
+      .cookie('token', data.token, {
+        httpOnly: true,
+        maxAge: data.expiresIn
+      })
+      .status(201)
+      .json({
+        status: 'success',
+        message: 'usuario registrado'
+      })
   } catch (err) {
     responseCustomError(res, err)
   }
