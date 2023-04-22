@@ -16,7 +16,8 @@ export async function register(req: Request, res: Response): Promise<void> {
     })
     res.status(201).json({
       status: 'success',
-      token: data.token
+      token: data.token,
+      expiresIn: data.expiresIn
     })
   } catch (err) {
     responseCustomError(res, err)
@@ -29,7 +30,21 @@ export async function login(req: Request, res: Response): Promise<void> {
     const data = await user.login({ email, password })
     res.status(201).json({
       status: 'success',
-      token: data.token
+      token: data.token,
+      refreshToken: data.refreshToken
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function current(req: any, res: Response): Promise<void> {
+  const { uid, role } = req.user
+  try {
+    const data = await user.current({ uid, role })
+    res.status(201).json({
+      status: 'success',
+      user: data
     })
   } catch (err) {
     responseCustomError(res, err)

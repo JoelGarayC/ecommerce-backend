@@ -1,5 +1,9 @@
 import { compare } from 'bcryptjs'
-import { type IUser } from '../../../types/IUser'
+import {
+  type IUser,
+  type IUserCurrent,
+  type IUserToken
+} from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
 import { generateToken, type ReturnToken } from '../../../utils/generateToken'
 import { hashPassword } from '../../../utils/hashPassword'
@@ -38,18 +42,31 @@ class UserManager {
 
     const userData = await User.findOne({ email: user.email })
     if (userData === null) {
-      throw new CustomError('Correo electrónico no encontrado!', 400)
+      throw new CustomError('Correo electrónico no existe!', 403)
     }
 
     const match = await compare(user.password, userData.password)
     if (!match) {
-      throw new CustomError('Contraseña incorrecta', 400)
+      throw new CustomError('Contraseña incorrecta', 403)
     }
 
-    // Generar un token JWT para el nuevo usuario
+    // Generar un token JWT para el usuario
     const token = await generateToken(userData)
 
     return token
+  }
+
+  async current({ uid, role }: IUserToken): Promise<IUserCurrent> {
+    const user = await User.findById(uid)
+    if (user === null) {
+      throw new CustomError('Usuario no encontrado', 403)
+    }
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role
+    }
   }
 }
 

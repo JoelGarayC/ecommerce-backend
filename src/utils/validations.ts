@@ -198,7 +198,7 @@ export function validateTypeUser(user: IUser): void {
 }
 
 export function validateFieldsUserLogin(user: IUser): void {
-  const requiredFields: Array<keyof IUser> = ['email', 'password', 'role']
+  const requiredFields: Array<keyof IUser> = ['email', 'password']
 
   for (const field of requiredFields) {
     if (

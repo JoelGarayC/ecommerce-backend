@@ -12,3 +12,17 @@ export interface IUser {
   password: string
   role?: UserRole
 }
+
+export interface IUserToken {
+  uid: string
+  role: UserRole
+}
+
+export interface IUserCurrent {
+  firstName?: string
+  lastName?: string
+  email: string
+  cart?: string
+  age?: number
+  role?: UserRole
+}
