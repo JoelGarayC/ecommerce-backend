@@ -1,3 +1,4 @@
+import bodyparser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { type Express } from 'express'
@@ -26,6 +27,8 @@ class App {
     this.app.use(cookieParser())
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
+    this.app.use(bodyparser.json())
+    this.app.use(bodyparser.urlencoded({ extended: true }))
     this.app.use(express.static(join(__dirname, '../public')))
   }
 
