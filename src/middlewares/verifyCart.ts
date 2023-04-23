@@ -10,24 +10,25 @@ export const verifyCart = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const email = req.body.email
-
-    if (email === undefined) {
-      throw new Error('El email es requerido')
-    }
+    // el email se valida en un midleware anterior
+    const emailUser = req.body.email
 
     const existInUser = await User.findOne({
-      email,
+      email: emailUser,
       cart: { $exists: true }
     })
 
+    const existEmail = await User.findOne({
+      email: emailUser
+    })
+
     // Si no existe el id del carrito en el id del usuario, entonces crea uno nuevo
-    if (existInUser === null) {
+    if (existInUser === null && existEmail !== null) {
       const { id: idCart } = await cart.addCart()
 
       // Busca al usuario por su identificador único y actualiza su propiedad 'cart'
       await User.findOneAndUpdate(
-        { email },
+        { email: emailUser },
         { $set: { cart: idCart } },
         { new: true }
       )

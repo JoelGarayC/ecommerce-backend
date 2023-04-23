@@ -9,10 +9,14 @@ import {
   updateProductToCart,
   updateProductsToCart
 } from '../dao/mongo/controllers/cart.controller'
+import authorization from '../middlewares/authorization'
 
 const router = Router()
 
-router.route('/').get(getCarts).post(addCart)
+router
+  .route('/')
+  .get(authorization(['admin']), getCarts)
+  .post(addCart)
 
 router
   .route('/:cid')

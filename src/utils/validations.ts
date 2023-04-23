@@ -1,4 +1,5 @@
 import { type Request } from 'express'
+import { body } from 'express-validator'
 import mongoose from 'mongoose'
 import { Cart } from '../dao/mongo/models/Cart'
 import { Product } from '../dao/mongo/models/Product'
@@ -213,3 +214,40 @@ export function validateFieldsUserLogin(user: IUser): void {
     }
   }
 }
+
+export const validateLoginBody = [
+  body('email', 'El email es obligatorio y debe ser válido')
+    .trim()
+    .isEmail()
+    .normalizeEmail(),
+  body('password', 'El password debe tener al menos 5 caracteres')
+    .trim()
+    .custom((value: string) => {
+      return value.match(/[a-z-A-Z]/) !== null && value.length >= 5
+    })
+]
+
+export const validateRegisterBody = [
+  body('email', 'El email es obligatorio y debe ser válido')
+    .trim()
+    .isEmail()
+    .normalizeEmail(),
+  body(
+    'password',
+    'El password debe tener al menos 5 caracteres y contener letras mayúsculas o minúsculas'
+  )
+    .trim()
+    .custom((value: string) => {
+      return value.match(/[a-zA-Z]/) !== null && value.length >= 5
+    }),
+  body('firstName', 'El nombre es obligatorio y debe contener solo letras')
+    .trim()
+    .isAlpha(),
+  body('lastName', 'El apellido es obligatorio y debe contener solo letras')
+    .trim()
+    .isAlpha(),
+  body('age', 'La edad debe ser un número entre 18 y 99')
+    .trim()
+    .optional()
+    .isInt({ min: 18, max: 99 })
+]

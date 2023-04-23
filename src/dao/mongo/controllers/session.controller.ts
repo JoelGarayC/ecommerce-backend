@@ -5,15 +5,18 @@ import SessionService from '../services/session.service'
 const user = new SessionService()
 
 export async function register(req: Request, res: Response): Promise<void> {
-  const { firstName, lastName, email, password, role = 'user' } = req.body
+  const { firstName, lastName, email, password, role, age } = req.body
+
   try {
     const data = await user.register({
       firstName,
       lastName,
       email,
       password,
+      age,
       role
     })
+
     res
       .cookie('token', data.token, {
         httpOnly: true,
@@ -31,8 +34,10 @@ export async function register(req: Request, res: Response): Promise<void> {
 
 export async function login(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body
+
   try {
     const data = await user.login({ email, password })
+
     res
       .cookie('token', data.token, {
         httpOnly: true,
@@ -50,6 +55,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 
 export async function current(req: any, res: Response): Promise<void> {
   const { uid, role } = req.user
+
   try {
     const data = await user.current({ uid, role })
     res.status(201).json({
@@ -61,9 +67,10 @@ export async function current(req: any, res: Response): Promise<void> {
   }
 }
 
-export async function logout(req: any, res: Response): Promise<void> {
+export async function logout(_req: Request, res: Response): Promise<void> {
   try {
     const data = await user.logout(res)
+
     res.status(201).json({
       status: 'success',
       user: data

@@ -6,20 +6,24 @@ import {
   getProducts,
   updateProductById
 } from '../dao/mongo/controllers/product.controller'
+import authorization from '../middlewares/authorization'
 import { uploader } from '../middlewares/uploaderImages'
-import verifyToken from '../middlewares/verifyToken'
 
 const router = Router()
 
 router
   .route('/')
   .get(getProducts)
-  .post(uploader.array('thumbnails'), verifyToken(['admin']), addProduct)
+  .post(uploader.array('thumbnails'), authorization(['admin']), addProduct)
 
 router
   .route('/:pid')
   .get(getProductById)
-  .put(uploader.array('thumbnails'), updateProductById)
-  .delete(deleteProductById)
+  .put(
+    uploader.array('thumbnails'),
+    authorization(['admin']),
+    updateProductById
+  )
+  .delete(authorization(['admin']), deleteProductById)
 
 export default router

@@ -4,27 +4,25 @@ import { type IUser, type IUserToken } from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
 import { generateToken, type ReturnToken } from '../../../utils/generateToken'
 import { hashPassword } from '../../../utils/hashPassword'
-import {
-  validateFieldsUser,
-  validateFieldsUserLogin
-} from '../../../utils/validations'
 import { User } from '../models/User'
 
 class SessionService {
   async register(user: IUser): Promise<ReturnToken> {
-    validateFieldsUser(user)
-
     const existingUser = await User.findOne({ email: user.email })
     if (existingUser !== null) {
-      throw new CustomError('Correo electrónico ya registrado', 400)
+      throw new CustomError(
+        'EL correo electrónico ya está registrado. Inicia sesión!',
+        400
+      )
     }
 
     const newUser = new User({
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      age: user.age,
       password: await hashPassword(user.password),
-      role: user.role !== null ? user.role : 'user'
+      role: user.role !== undefined ? user.role : 'user'
     })
     const userSave = await newUser.save()
 
@@ -34,11 +32,9 @@ class SessionService {
   }
 
   async login(user: IUser): Promise<ReturnToken> {
-    validateFieldsUserLogin(user)
-
     const userData = await User.findOne({ email: user.email })
     if (userData === null) {
-      throw new CustomError('Correo electrónico no existe!', 403)
+      throw new CustomError('El correo electrónico no existe. Regístrate!', 403)
     }
 
     const match = await compare(user.password, userData.password)

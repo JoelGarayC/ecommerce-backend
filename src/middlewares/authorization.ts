@@ -3,12 +3,12 @@ import { verify } from 'jsonwebtoken'
 import { JWT_SECRET } from '../config'
 import { type UserRole } from '../types/IUser'
 
-function verifyToken(role: UserRole[]) {
+function authorization(role: UserRole[]) {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
       const token = req?.cookies?.token
       if (token === undefined) {
-        throw new Error('Inicia sesión en /login')
+        throw new Error('No autorizado, ¡Inicia sesión!')
       }
       const payload = verify(token, JWT_SECRET as string)
       req.user = payload // envia el payload al siguiente middleware
@@ -27,7 +27,7 @@ function verifyToken(role: UserRole[]) {
   }
 }
 
-export default verifyToken
+export default authorization
 
 function errorTokens(message: string): string {
   switch (message) {

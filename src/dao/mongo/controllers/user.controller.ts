@@ -15,3 +15,20 @@ export async function getUsers(_req: Request, res: Response): Promise<void> {
     responseCustomError(res, err)
   }
 }
+
+export async function deleteUserById(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { uid } = req.params
+
+  try {
+    const data = await user.deleteUserById(uid)
+    res.status(201).json({
+      status: 'success',
+      message: data
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
