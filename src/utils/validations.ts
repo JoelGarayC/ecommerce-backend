@@ -220,7 +220,10 @@ export const validateLoginBody = [
     .trim()
     .isEmail()
     .normalizeEmail(),
-  body('password', 'El password debe tener al menos 5 caracteres')
+  body(
+    'password',
+    'El password debe tener al menos 5 caracteres y contener letras mayúsculas o minúsculas'
+  )
     .trim()
     .custom((value: string) => {
       return value.match(/[a-z-A-Z]/) !== null && value.length >= 5
