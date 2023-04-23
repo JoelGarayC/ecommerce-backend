@@ -73,7 +73,7 @@ export async function logout(_req: Request, res: Response): Promise<void> {
 
     res.status(201).json({
       status: 'success',
-      user: data
+      message: data
     })
   } catch (err) {
     responseCustomError(res, err)
