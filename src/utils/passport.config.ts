@@ -13,7 +13,7 @@ const initializePassport = (): void => {
       {
         clientID: GITHUB_CLIENT_ID as string,
         clientSecret: GITHUB_CLIENT_SECRET as string,
-        callbackURL: api.url + '/sessions/github/callback'
+        callbackURL: `${api.url}/sessions/github/callback`
       },
       async function (
         accessToken: string,
