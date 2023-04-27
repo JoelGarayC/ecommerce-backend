@@ -6,7 +6,7 @@ import {
   getProducts,
   updateProductById
 } from '../dao/mongo/controllers/product.controller'
-import authorization from '../middlewares/authorization'
+import { authorization } from '../middlewares/authorization'
 import { uploader } from '../middlewares/uploaderImages'
 
 const router = Router()

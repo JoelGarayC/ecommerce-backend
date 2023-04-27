@@ -1,21 +1,16 @@
 import { type NextFunction, type Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { JWT_SECRET } from '../config'
-import { type UserRole } from '../types/IUser'
 
-export const authorization = (role: UserRole[]) => {
+export const userFromToken = () => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
       const token = req?.cookies?.token
-      if (token === undefined || req.user !== undefined) {
+      if (token === undefined) {
         throw new Error('No autorizado, ¡Inicia sesión!')
       }
       const payload = verify(token, JWT_SECRET as string)
       req.user = payload // envia el payload al siguiente middleware
-
-      if (!role.includes(req.user.role)) {
-        throw new Error('No autorizado, es nesesario un rol más específico')
-      }
       next()
     } catch (err: any) {
       res.status(401).json({

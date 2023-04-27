@@ -9,7 +9,7 @@ import {
   updateProductToCart,
   updateProductsToCart
 } from '../dao/mongo/controllers/cart.controller'
-import authorization from '../middlewares/authorization'
+import { authorization } from '../middlewares/authorization'
 
 const router = Router()
 

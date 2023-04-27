@@ -11,13 +11,13 @@ import {
   profile,
   register
 } from '../dao/mongo/controllers/views.controller'
-import verifyToken from '../middlewares/authorization'
+import { authorization } from '../middlewares/authorization'
 
 const router = Router()
 
 router.get('/login', login)
 router.get('/register', register)
-router.get('/profile', verifyToken(['admin', 'user']), profile)
+router.get('/profile', authorization(['admin', 'user']), profile)
 
 router.get('/products', getProducts)
 router.get('/products/:pid', getProductsById)

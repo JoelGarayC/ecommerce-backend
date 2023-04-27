@@ -3,11 +3,11 @@ import {
   deleteUserById,
   getUsers
 } from '../dao/mongo/controllers/user.controller'
-import verifyToken from '../middlewares/authorization'
+import { authorization } from '../middlewares/authorization'
 
 const router = Router()
 
-router.get('/', verifyToken(['admin']), getUsers)
-router.delete('/:uid', verifyToken(['admin']), deleteUserById)
+router.get('/', authorization(['admin']), getUsers)
+router.delete('/:uid', authorization(['admin']), deleteUserById)
 
 export default router

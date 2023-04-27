@@ -6,6 +6,7 @@ import { CustomError } from './CustomError'
 export interface ReturnToken {
   token: string
   expiresIn: number
+  email: string
 }
 
 export async function generateToken(user: IUser): Promise<ReturnToken> {
@@ -18,7 +19,7 @@ export async function generateToken(user: IUser): Promise<ReturnToken> {
         expiresIn
       }
     )
-    return { token, expiresIn }
+    return { token, expiresIn, email: user.email }
   } catch (err) {
     throw new CustomError('El token no se pudo generar', 400)
   }

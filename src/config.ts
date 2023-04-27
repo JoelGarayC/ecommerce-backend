@@ -16,7 +16,9 @@ const {
   JWT_SECRET,
   PERSISTENCE,
   URL_FRONTEND,
-  URL_BACKEND
+  URL_BACKEND,
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET
 } = process.env
 
 const version = '/v1'
@@ -79,4 +81,12 @@ export function configCloudinary(): void {
   })
 }
 
-export { JWT_SECRET, MONGODB_URI, NODE_ENV, PERSISTENCE, PORT }
+export {
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  JWT_SECRET,
+  MONGODB_URI,
+  NODE_ENV,
+  PERSISTENCE,
+  PORT
+}

@@ -2,11 +2,13 @@ import bodyparser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { type Express } from 'express'
+import passport from 'passport'
 import { join } from 'path'
 import { api, corsOptions } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 import viewsRoutes from './routes/views.routes'
+import initializePassport from './utils/passport.config'
 
 class App {
   public app: Express
@@ -26,6 +28,8 @@ class App {
     this.app.use(cors(corsOptions))
     this.app.use(cookieParser())
     this.app.use(express.json())
+    initializePassport()
+    this.app.use(passport.initialize())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(bodyparser.json())
     this.app.use(bodyparser.urlencoded({ extended: true }))

@@ -11,7 +11,7 @@ export const verifyCart = async (
 ): Promise<void> => {
   try {
     // el email se valida en un midleware anterior
-    const emailUser = req.body.email
+    const emailUser = req.body.email ?? req.user.email
 
     const existInUser = await User.findOne({
       email: emailUser,
