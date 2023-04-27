@@ -26,13 +26,13 @@ const pathBase = `/api${version}`
 export const urlBase =
   (NODE_ENV as string) === 'production'
     ? (URL_BACKEND as string)
-    : 'http://localhost'
+    : `http://localhost:${PORT}`
 
 export const api = {
   version,
   pathBase,
-  urlBase: `${urlBase}:${PORT}`,
-  url: `${urlBase}:${PORT}${pathBase}`
+  urlBase: `${urlBase}`,
+  url: `${urlBase}${pathBase}`
 }
 
 let allowedOrigins: string[] = []
