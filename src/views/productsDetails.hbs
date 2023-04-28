@@ -2,48 +2,82 @@
   <h1>Detalles del producto: </h1>
   <li>
     {{#if data}}
-      <picture>
-        {{#if data.thumbnails}}
-          {{#each data.thumbnails}}
-            <img src={{this.path}} alt={{this.name}} />
-          {{/each}}
-        {{else}}
-          <strong>No hay imagenes</strong>
-        {{/if}}
-      </picture>
-      <div class='list-description'>
-        <h3>{{data.title}}</h3>
-        <p>{{data.description}}</p>
-        <p><strong>Precio:</strong> {{data.price}}</p>
-        <p><strong>Código:</strong> {{data.code}}</p>
-        <p><strong>Stock:</strong> {{data.stock}}</p>
-        <p><strong>Categoría:</strong> {{data.category}}</p>
-      </div>
-      <div class='btn'>
-        <button
-          class='btn-update'
-          data-product-id='{{data._id}}'
-          id='btn-add-cart'
-        >Agregar a Carrito</button>
-      </div>
+    <picture>
+      {{#if data.thumbnails}}
+      {{#each data.thumbnails}}
+      <img src={{this.path}} alt={{this.name}} />
+      {{/each}}
+      {{else}}
+      <strong>No hay imagenes</strong>
+      {{/if}}
+    </picture>
+    <div class='list-description'>
+      <h3>{{data.title}}</h3>
+      <p>{{data.description}}</p>
+      <p><strong>Precio:</strong> {{data.price}}</p>
+      <p><strong>Código:</strong> {{data.code}}</p>
+      <p><strong>Stock:</strong> {{data.stock}}</p>
+      <p><strong>Categoría:</strong> {{data.category}}</p>
+    </div>
+    <div class='btn'>
+      <a href="/carts/{{cart}}">Ver carrito</a>
+      <button class='btn-update' data-product-id='{{data._id}}' data-cart-id='{{cart}}' id='btn-add-cart'>Agregar a
+        Carrito</button>
+    </div>
     {{else}}
-      <strong>No se ha encontrado ningun producto</strong>
+    <strong>No se ha encontrado ningun producto</strong>
     {{/if}}
   </li>
 </div>
 
 <style>
-  .product-details { max-width: 550px; margin: 0 auto; padding: 1rem;
-  }.product-details picture { border-radius: 0.5rem; } .product-details h1
-  {padding-bottom: 0.8rem; font-size: 1.5rem; } .list-description {
-  padding:1rem; } .btn { padding: 0 1rem 1rem 1rem; display: flex;
-  justify-content:flex-end; } .btn button { background-color: #af511b; } .btn
-  button.btn-update{ background-color: #2a7f94; }
+  .product-details {
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .product-details picture {
+    border-radius: 0.5rem;
+  }
+
+  .product-details h1 {
+    padding-bottom: 0.8rem;
+    font-size: 1.5rem;
+  }
+
+  .list-description {
+    padding: 1rem;
+  }
+
+  .btn {
+    padding: 0 1rem 1rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+
+  .btn button {
+    background-color: #af511b;
+  }
+
+  .btn button.btn-update {
+    background-color: #2a7f94;
+  }
 </style>
 
 <script>
   const btn = document.getElementById('btn-add-cart');
-  btn.addEventListener('click', (e) => { const idProd =
-  btn.getAttribute('data-product-id'); alert(`Producto seleccionado con id:
-  ${idProd}`); })
+  btn.addEventListener('click', (e) => {
+    const idProd = btn.getAttribute('data-product-id');
+    const idCart = btn.getAttribute('data-cart-id');
+
+    fetch(`/api/v1/carts/${idCart}/products/${idProd}`, { method: 'POST' })
+      .then(response => response.json())
+      .then(product => {
+        alert(`Producto agregado al carrito con éxito`);
+      })
+      .catch(error => console.error('Error al recuperar información del producto:', error));
+  })
 </script>

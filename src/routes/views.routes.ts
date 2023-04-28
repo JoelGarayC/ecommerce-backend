@@ -20,7 +20,7 @@ router.get('/register', register)
 router.get('/profile', authorization(['admin', 'user']), profile)
 
 router.get('/products', getProducts)
-router.get('/products/:pid', getProductsById)
+router.get('/products/:pid', authorization(['admin', 'user']), getProductsById)
 
 router.get('/addProduct', addProduct)
 router.get('/carts/:cid', getCartId)

@@ -1,28 +1,35 @@
 <div class='cont-carrito'>
   <h1>Carrito de Productos</h1>
-  <div>
-    <ul class='list-carrito'>
-      {{#each data}}
-        <li>
-          <picture>
-            {{#each this.product.thumbnails}}
-              <img src={{this.path}} alt={{this.name}} />
-            {{/each}}
-          </picture>
-          <div class='list-carrito-des'>
-            <h3>{{this.product.title}}</h3>
-            <p>{{this.product.description}}</p>
-            <p><strong>Precio:</strong> {{this.product.price}}</p>
-            <p><strong>Código:</strong> {{this.product.code}}</p>
-            <p><strong>Categoría:</strong> {{this.product.category}}</p>
-          </div>
-          <div>
-            <p><strong>Cantidad:</strong> {{this.quantity}}</p>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
-  </div>
+  {{#if data}}
+    <div>
+      <ul class='list-carrito'>
+        {{#each data}}
+          <li>
+            <picture>
+              {{#each this.product.thumbnails}}
+                <img src={{this.path}} alt={{this.name}} />
+              {{/each}}
+            </picture>
+            <div class='list-carrito-des'>
+              <h3>{{this.product.title}}</h3>
+              <p>{{this.product.description}}</p>
+              <p><strong>Precio:</strong> {{this.product.price}}</p>
+              <p><strong>Código:</strong> {{this.product.code}}</p>
+              <p><strong>Categoría:</strong> {{this.product.category}}</p>
+            </div>
+            <div>
+              <p><strong>Cantidad:</strong> {{this.quantity}}</p>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{else}}
+    <div>
+      <p>No hay productos en el carrito</p>
+      <a href='/products'>Añadir productos</a>
+    </div>
+  {{/if}}
 </div>
 
 <style>

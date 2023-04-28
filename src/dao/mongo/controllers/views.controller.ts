@@ -30,16 +30,17 @@ export async function getProducts(req: any, res: Response): Promise<void> {
   }
 }
 
-export async function getProductsById(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getProductsById(req: any, res: Response): Promise<void> {
   const { pid } = req.params
 
   try {
     const data = await product.getProductById(pid)
 
-    res.render('productsDetails', { data })
+    // optiene el id del carrito del usuario logueado
+    const { uid } = req.user
+    const { cart } = await user.getUserByID(uid)
+
+    res.render('productsDetails', { data, cart })
   } catch (err) {
     responseCustomError(res, err)
   }
