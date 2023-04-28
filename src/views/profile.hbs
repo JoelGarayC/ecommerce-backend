@@ -1,24 +1,26 @@
-{{#if data}}
-  <div>
-    <h1>Perfil del usuario</h1>
-    <p>Nombre: {{data.firstName}}</p>
-    <p>Apellido: {{data.lastName}}</p>
-    <p>Correo: {{data.email}}</p>
-    <p>Edad: {{data.age}}</p>
-    <p>Rol: {{data.role}}</p>
+<section class='profile-section'>
+  {{#if data}}
+    <div>
+      <h1>Perfil del usuario</h1>
+      <p>Nombre: {{data.firstName}}</p>
+      <p>Apellido: {{data.lastName}}</p>
+      <p>Correo: {{data.email}}</p>
+      <p>Edad: {{data.age}}</p>
+      <p>Rol: {{data.role}}</p>
+      <br />
+      <form action='/api/v1/sessions/logout' method='POST'>
+        <button type='submit'>Cerrar sesión</button>
+      </form>
+    </div>
     <br />
-    <form action='/api/v1/sessions/logout' method='POST'>
-      <button type='submit'>Cerrar sesión</button>
-    </form>
-  </div>
-  <br />
-  <div>
-    <a href='/products'>Ir a Productos</a>
-    <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
-  </div>
-{{else}}
-  <div>
-    <p>No tiene acceso a esta pag . Inicie sesión</p>
-    <a href='/login'>Iniciar sesión</a>
-  </div>
-{{/if}}
+    <div>
+      <a href='/products'>Ir a Productos</a>
+      <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
+    </div>
+  {{else}}
+    <div>
+      <p>No tiene acceso a esta pag . Inicie sesión</p>
+      <a href='/login'>Iniciar sesión</a>
+    </div>
+  {{/if}}
+</section>

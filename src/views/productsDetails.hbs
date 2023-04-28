@@ -1,4 +1,4 @@
-<div class='product-details'>
+<section class='product-details'>
   <h1>Detalles del producto: </h1>
   <li>
     {{#if data}}
@@ -32,7 +32,7 @@
       <strong>No se ha encontrado ningun producto</strong>
     {{/if}}
   </li>
-</div>
+</section>
 
 <style>
   .product-details { max-width: 550px; margin: 0 auto; padding: 1rem; }
@@ -45,11 +45,10 @@
 
 <script>
   const btn = document.getElementById('btn-add-cart');
-  btn.addEventListener('click', (e) => { const idProd =
+  btn.addEventListener("click", (e) => { const idProd =
   btn.getAttribute('data-product-id'); const idCart =
-  btn.getAttribute('data-cart-id');
+  btn.getAttribute('data-cart-id'); const msg = `Producto agregado al carrito!`
   fetch(`/api/v1/carts/${idCart}/products/${idProd}`, { method: 'POST' })
-  .then(response => response.json()).then(product => { alert(`Producto agregado
-  al carrito con éxito`); }) .catch(error => console.error('Error al recuperar
-  información del producto:', error)); })
+  .then(response => response.json()) .then(product => { alert(msg); })
+  .catch(error => console.error(`Error: ${error}`)); });
 </script>
