@@ -4,7 +4,7 @@ import cors from 'cors'
 import express, { type Express } from 'express'
 import passport from 'passport'
 import { join } from 'path'
-import { api, corsOptions } from './config'
+import { api, configCloudinary, configHandlebars, corsOptions } from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 import viewsRoutes from './routes/views.routes'
@@ -25,15 +25,17 @@ class App {
   }
 
   private middlewares(): void {
-    this.app.use(cors(corsOptions))
-    this.app.use(cookieParser())
-    this.app.use(express.json())
+    configCloudinary()
+    configHandlebars(this.app)
     initializePassport()
-    this.app.use(passport.initialize())
-    this.app.use(express.urlencoded({ extended: true }))
     this.app.use(bodyparser.json())
     this.app.use(bodyparser.urlencoded({ extended: true }))
+    this.app.use(cookieParser())
+    this.app.use(cors(corsOptions))
+    this.app.use(express.json())
     this.app.use(express.static(join(__dirname, '../public')))
+    this.app.use(express.urlencoded({ extended: true }))
+    this.app.use(passport.initialize())
   }
 
   private routes(): void {
