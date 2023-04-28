@@ -22,8 +22,8 @@ router.get('/profile', authorization(['admin', 'user']), profile)
 router.get('/products', getProducts)
 router.get('/products/:pid', authorization(['admin', 'user']), getProductsById)
 
-router.get('/addProduct', addProduct)
-router.get('/carts/:cid', getCartId)
+router.get('/addProduct', authorization(['admin']), addProduct)
+router.get('/carts/:cid', authorization(['admin', 'user']), getCartId)
 
 router.get('/chat', chat)
 router.get('/', homePage)
