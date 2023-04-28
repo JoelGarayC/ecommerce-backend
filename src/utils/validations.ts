@@ -1,5 +1,6 @@
 import { type Request } from 'express'
 import { body } from 'express-validator'
+import fs from 'fs'
 import mongoose from 'mongoose'
 import { Cart } from '../dao/mongo/models/Cart'
 import { Product } from '../dao/mongo/models/Product'
@@ -156,20 +157,28 @@ export function saveImagesUrl(req: Request): IThumbnail[] {
   return images ?? []
 }
 
-// export function validateExistCodeFs(
-//   product: IProduct,
-//   products: IProduct[]
-// ): void {
-//   if (products?.length === 0) {
-//     throw new Error('No se ha encontrado ningún producto')
-//   }
-//   const codeExists = products.some((prod) => prod.code === product.code)
-//   if (codeExists) {
-//     throw new Error(
-//       `El código "${product.code}" ya existe en la lista, escribe otro!`
-//     )
-//   }
-// }
+export function validateExistCodeFs(
+  product: IProduct,
+  products: IProduct[]
+): void {
+  if (products?.length === 0) {
+    throw new Error('No se ha encontrado ningún producto')
+  }
+  const codeExists = products.some((prod) => prod.code === product.code)
+  if (codeExists) {
+    throw new Error(
+      `El código "${product.code}" ya existe en la lista, escribe otro!`
+    )
+  }
+}
+
+export function validateFileJson(pathFile: string): void {
+  if (!fs.existsSync(pathFile)) {
+    throw new Error(
+      `El archivo de products.json no existe en la ruta "${pathFile}"`
+    )
+  }
+}
 
 export function validateFieldsUser(user: IUser): void {
   const requiredFields: Array<keyof IUser> = [
