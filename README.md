@@ -29,3 +29,7 @@ Para configurar las variables de entorno de tu aplicación, debes seguir los sig
    - **CLOUD_API_KEY**: Si su aplicación necesita subir imágenes a Cloudinary y estás utilizando MongoDB como persistencia, debes proporcionar tu clave API de Cloudinary aquí.
 
    - **CLOUD_API_SECRET**: Si su aplicación necesita subir imágenes a Cloudinary y estás utilizando MongoDB como persistencia, debes proporcionar tu clave secreta de Cloudinary aquí.
+
+   - **GITHUB_CLIENT_ID**: Proporciona el ID del cliente de GitHub para permitir que tu aplicación se autentique con GitHub.
+
+   - **GITHUB_CLIENT_SECRET**: Proporciona el ID secreto del cliente de GitHub para permitir que tu aplicación se autentique con GitHub.
