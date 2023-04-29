@@ -25,7 +25,6 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     if (NODE_ENV === 'production') {
       cookieOptions.secure = true // Solo enviar cookie a través de HTTPS en producción
-      cookieOptions.sameSite = 'none' // Permitir cookie cross-site en producción
     }
 
     res.cookie('token', data.token, cookieOptions).status(201).json({
@@ -50,7 +49,6 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     if (NODE_ENV === 'production') {
       cookieOptions.secure = true // Solo enviar cookie a través de HTTPS en producción
-      cookieOptions.sameSite = 'none' // Permitir cookie cross-site en producción
     }
 
     res.cookie('token', data.token, cookieOptions).status(201).json({
