@@ -5,7 +5,7 @@ import { JWT_SECRET } from '../config'
 export const userFromToken = () => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
-      const token = req?.cookies?.token ?? req?.cookies?.tokenApi
+      const token = req?.cookies?.token
       if (token === undefined) {
         throw new Error('No autorizado, ¡Inicia sesión!')
       }

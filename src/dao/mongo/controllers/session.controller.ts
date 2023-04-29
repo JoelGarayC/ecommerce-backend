@@ -30,10 +30,6 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     res.cookie('token', data.token, {
       ...cookieOptions,
-      domain: 'ecommerce-backend-rho.vercel.app'
-    })
-    res.cookie('tokenApi', data.token, {
-      ...cookieOptions,
       domain: 'ecommerce-five-wine.vercel.app'
     })
 
@@ -63,10 +59,6 @@ export async function login(req: Request, res: Response): Promise<void> {
     }
 
     res.cookie('token', data.token, {
-      ...cookieOptions,
-      domain: 'ecommerce-backend-rho.vercel.app'
-    })
-    res.cookie('tokenApi', data.token, {
       ...cookieOptions,
       domain: 'ecommerce-five-wine.vercel.app'
     })
