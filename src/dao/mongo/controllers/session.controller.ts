@@ -28,16 +28,10 @@ export async function register(req: Request, res: Response): Promise<void> {
       cookieOptions.sameSite = false
     }
 
-    res
-      .cookie('token', data.token, {
-        ...cookieOptions,
-        domain: 'ecommerce-five-wine.vercel.app'
-      })
-      .status(201)
-      .json({
-        status: 'success',
-        message: 'usuario registrado'
-      })
+    res.cookie('token', data.token, cookieOptions).status(201).json({
+      status: 'success',
+      message: 'usuario registrado'
+    })
   } catch (err) {
     responseCustomError(res, err)
   }
@@ -59,16 +53,10 @@ export async function login(req: Request, res: Response): Promise<void> {
       cookieOptions.sameSite = false
     }
 
-    res
-      .cookie('token', data.token, {
-        ...cookieOptions,
-        domain: 'ecommerce-five-wine.vercel.app'
-      })
-      .status(201)
-      .json({
-        status: 'success',
-        message: 'sesión iniciada'
-      })
+    res.cookie('token', data.token, cookieOptions).status(201).json({
+      status: 'success',
+      message: 'sesión iniciada'
+    })
   } catch (err) {
     responseCustomError(res, err)
   }
