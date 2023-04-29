@@ -1,4 +1,5 @@
 import { type Request, type Response } from 'express'
+import { NODE_ENV } from '../../../config'
 import { responseCustomError } from '../../../utils/CustomError'
 import SessionService from '../services/session.service'
 
@@ -17,16 +18,20 @@ export async function register(req: Request, res: Response): Promise<void> {
       role
     })
 
-    res
-      .cookie('token', data.token, {
-        httpOnly: true,
-        maxAge: data.expiresIn
-      })
-      .status(201)
-      .json({
-        status: 'success',
-        message: 'usuario registrado'
-      })
+    const cookieOptions: any = {
+      httpOnly: true,
+      maxAge: data.expiresIn
+    }
+
+    if (NODE_ENV === 'production') {
+      cookieOptions.secure = true // Solo enviar cookie a través de HTTPS en producción
+      cookieOptions.sameSite = 'none' // Permitir cookie cross-site en producción
+    }
+
+    res.cookie('token', data.token, cookieOptions).status(201).json({
+      status: 'success',
+      message: 'usuario registrado'
+    })
   } catch (err) {
     responseCustomError(res, err)
   }
@@ -38,16 +43,20 @@ export async function login(req: Request, res: Response): Promise<void> {
   try {
     const data = await user.login({ email, password })
 
-    res
-      .cookie('token', data.token, {
-        httpOnly: true,
-        maxAge: data.expiresIn
-      })
-      .status(201)
-      .json({
-        status: 'success',
-        message: 'sesión iniciada'
-      })
+    const cookieOptions: any = {
+      httpOnly: true,
+      maxAge: data.expiresIn
+    }
+
+    if (NODE_ENV === 'production') {
+      cookieOptions.secure = true // Solo enviar cookie a través de HTTPS en producción
+      cookieOptions.sameSite = 'none' // Permitir cookie cross-site en producción
+    }
+
+    res.cookie('token', data.token, cookieOptions).status(201).json({
+      status: 'success',
+      message: 'sesión iniciada'
+    })
   } catch (err) {
     responseCustomError(res, err)
   }

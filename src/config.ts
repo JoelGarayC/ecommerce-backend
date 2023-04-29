@@ -39,7 +39,7 @@ let allowedOrigins: string[] = []
 if (NODE_ENV === 'production') {
   allowedOrigins = [urlBase, api.urlBase, URL_FRONTEND as string]
 } else {
-  allowedOrigins = [urlBase, api.urlBase]
+  allowedOrigins = [urlBase, api.urlBase, 'http://localhost:5173']
 }
 
 export const corsOptions: CorsOptions = {
