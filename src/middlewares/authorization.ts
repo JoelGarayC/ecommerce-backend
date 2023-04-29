@@ -6,7 +6,7 @@ import { type UserRole } from '../types/IUser'
 export const authorization = (role: UserRole[]) => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
-      const token = req?.cookies?.token
+      const token = req?.cookies?.token ?? req?.cookies?.tokenApi
       if (token === undefined || req.user !== undefined) {
         throw new Error('No autorizado, ¡Inicia sesión!')
       }
