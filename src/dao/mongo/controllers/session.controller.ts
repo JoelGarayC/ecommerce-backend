@@ -28,7 +28,13 @@ export async function register(req: Request, res: Response): Promise<void> {
       cookieOptions.sameSite = false
     }
 
-    res.cookie('token', data.token, cookieOptions).status(201).json({
+    res.cookie('token', data.token, cookieOptions)
+    res.cookie('token', data.token, {
+      ...cookieOptions,
+      domain: 'ecommerce-backend-rho.vercel.app'
+    })
+
+    res.status(201).json({
       status: 'success',
       message: 'usuario registrado'
     })
@@ -53,7 +59,13 @@ export async function login(req: Request, res: Response): Promise<void> {
       cookieOptions.sameSite = false
     }
 
-    res.cookie('token', data.token, cookieOptions).status(201).json({
+    res.cookie('token', data.token, cookieOptions)
+    res.cookie('token', data.token, {
+      ...cookieOptions,
+      domain: 'ecommerce-backend-rho.vercel.app'
+    })
+
+    res.status(201).json({
       status: 'success',
       message: 'sesión iniciada'
     })
