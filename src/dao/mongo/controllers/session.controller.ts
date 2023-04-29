@@ -53,10 +53,13 @@ export async function login(req: Request, res: Response): Promise<void> {
       cookieOptions.sameSite = 'None'
     }
 
-    res.cookie('token', data.token, cookieOptions).status(201).json({
-      status: 'success',
-      message: 'sesión iniciada'
-    })
+    res
+      .cookie('token', data.token, { ...cookieOptions, domain: 'vercel.app' })
+      .status(201)
+      .json({
+        status: 'success',
+        message: 'sesión iniciada'
+      })
   } catch (err) {
     responseCustomError(res, err)
   }
