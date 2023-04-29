@@ -45,16 +45,13 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     const cookieOptions: any = {
       httpOnly: true,
-      maxAge: data.expiresIn,
-      sameSite: 'Lax'
+      maxAge: data.expiresIn
     }
 
     if (NODE_ENV === 'production') {
       cookieOptions.secure = true
       cookieOptions.sameSite = false
     }
-
-    console.log(cookieOptions)
 
     res.cookie('token', data.token, cookieOptions).status(201).json({
       status: 'success',
