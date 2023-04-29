@@ -59,7 +59,7 @@ export async function getCartId(req: Request, res: Response): Promise<void> {
 
   try {
     const cartData = await cart.getCartById(cid)
-    const data = cartData.products
+    const data = cartData
 
     res.render('cart', { data })
   } catch (err) {

@@ -47,8 +47,8 @@
   const btn = document.getElementById('btn-add-cart');
   btn.addEventListener("click", (e) => { const idProd =
   btn.getAttribute('data-product-id'); const idCart =
-  btn.getAttribute('data-cart-id'); const msg = `Producto agregado al carrito!`
+  btn.getAttribute('data-cart-id');
   fetch(`/api/v1/carts/${idCart}/products/${idProd}`, { method: 'POST' })
-  .then(response => response.json()) .then(product => { alert(msg); })
-  .catch(error => console.error(`Error: ${error}`)); });
+  .then(response => response.json()) .then(product => { alert(product?.message);
+  }) .catch(error => console.error(`Error: ${error}`)); });
 </script>

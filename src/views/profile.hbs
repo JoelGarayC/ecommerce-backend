@@ -2,11 +2,11 @@
   {{#if data}}
     <div>
       <h1>Perfil del usuario</h1>
-      <p>Nombre: {{data.firstName}}</p>
-      <p>Apellido: {{data.lastName}}</p>
-      <p>Correo: {{data.email}}</p>
-      <p>Edad: {{data.age}}</p>
-      <p>Rol: {{data.role}}</p>
+      <p><strong>Nombres: </strong> {{data.firstName}}</p>
+      <p><strong>Apellidos:</strong> {{data.lastName}}</p>
+      <p><strong>Correo:</strong> {{data.email}}</p>
+      <p><strong>Edad:</strong> {{data.age}}</p>
+      <p><strong>Rol:</strong> {{data.role}}</p>
       <br />
       <form action='/api/v1/sessions/logout' method='POST'>
         <button type='submit'>Cerrar sesión</button>
@@ -15,6 +15,7 @@
     <br />
     <div>
       <a href='/products'>Ir a Productos</a>
+      <br />
       <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
     </div>
   {{else}}

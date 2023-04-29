@@ -63,7 +63,7 @@ class CartService {
           $inc: { 'products.$.quantity': 1 }
         }
       )
-      return 'Producto agregado al carrito con éxito y aumentó el valor de quantity'
+      return 'Producto agregado al carrito con éxito denuevo!'
     }
 
     // Si el producto no existe en el carrito, se agrega con una cantidad de 1
@@ -73,13 +73,13 @@ class CartService {
     })
 
     await cartById.save()
-    return 'Producto agregado al carrito con éxito'
+    return 'Producto agregado al carrito con éxito!'
   }
 
   async updateProduct(
     idCart: string,
     idProduct: string,
-    quantity: any
+    quantity: string
   ): Promise<string> {
     if (quantity === undefined) {
       throw new CustomError(
@@ -108,7 +108,7 @@ class CartService {
         'products.product': idProduct
       },
       {
-        $set: { 'products.$.quantity': quantity }
+        $set: { 'products.$.quantity': parseInt(quantity) }
       }
     )
     return 'Producto actualizado con éxito en el carrito'
@@ -174,7 +174,7 @@ class CartService {
       { _id: idCart },
       { $pull: { products: { product: idProduct } } }
     )
-    return `Producto con ID: ${idProduct} eliminado del carrito correctamente`
+    return 'Producto eliminado del carrito correctamente!'
   }
 
   async deleteProducts(idCart: string): Promise<string> {
