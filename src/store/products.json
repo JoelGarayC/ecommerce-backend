@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "1",
+    "title": "Wireless Headphones",
+    "description": "High-quality wireless headphones with noise-cancelling technology and long battery life.",
+    "price": 89,
+    "thumbnails": [
+      {
+        "name": "ecommerce_coder/71Hx8b6HGbL._AC_SL1500_.jpg",
+        "path": "https://res.cloudinary.com/dqc4ncaxe/image/upload/v1681699880/ecommerce_coder/71Hx8b6HGbL._AC_SL1500_.jpg.webp",
+        "_id": "643cbb65f30d06f15e713df3"
+      }
+    ],
+    "code": "code-3",
+    "stock": 45,
+    "category": "electronics",
+    "status": true
+  },
+  {
+    "_id": "2",
+    "title": "example 4",
+    "description": "description",
+    "price": 56,
+    "thumbnails": [
+      {
+        "name": "ecommerce_coder/images (1).jpg",
+        "path": "https://res.cloudinary.com/dqc4ncaxe/image/upload/v1681784903/ecommerce_coder/images%20%281%29.jpg.webp",
+        "_id": "643e004b3b7bc22ba7519ebd"
+      },
+      {
+        "name": "ecommerce_coder/descarga (1).jpg",
+        "path": "https://res.cloudinary.com/dqc4ncaxe/image/upload/v1681784903/ecommerce_coder/descarga%20%281%29.jpg.webp",
+        "_id": "643e004b3b7bc22ba7519ebe"
+      }
+    ],
+    "code": "code-04",
+    "stock": 45,
+    "category": "variados",
+    "status": true
+  }
+]

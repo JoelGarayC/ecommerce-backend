@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
-import { responseCustomError } from '../../../utils/CustomError'
-import CartService from '../services/cart.service'
+import { responseCustomError } from '../../utils/CustomError'
+import CartService from '../mongo/services/cart.service'
 
 const cart = new CartService()
 
@@ -121,6 +121,42 @@ export async function deleteProductsToCart(
       status: 'success',
       message: data
     })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function purchase(req: any, res: Response): Promise<void> {
+  const { cid } = req.params
+  const { uid } = req.user
+  try {
+    const data = await cart.purchase(cid, uid)
+    if (
+      data.unPurchasedProducts.length > 0 &&
+      data.purchasedProducts.length === 0
+    ) {
+      res.status(200).json({
+        status: 'success',
+        message: 'Compra no completada',
+        unPurchaseProducts: data.unPurchasedProducts
+      })
+    } else if (data.unPurchasedProducts.length > 0) {
+      res.status(200).json({
+        status: 'success',
+        message:
+          'Compra completada, pero algunos productos no pudieron comprarse',
+        ticket: data.ticket,
+        purchaseProducts: data.purchasedProducts,
+        unPurchaseProducts: data.unPurchasedProducts
+      })
+    } else {
+      res.status(200).json({
+        status: 'success',
+        message: 'Compra realizada con éxito',
+        ticket: data.ticket,
+        purchaseProducts: data.purchasedProducts
+      })
+    }
   } catch (err) {
     responseCustomError(res, err)
   }

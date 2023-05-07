@@ -5,7 +5,7 @@ import {
   login,
   logout,
   register
-} from '../dao/mongo/controllers/session.controller'
+} from '../dao/controllers/session.controller'
 import { authorization } from '../middlewares/authorization'
 import { verifyCart } from '../middlewares/verifyCart'
 import { validateLoginBody, validateRegisterBody } from '../utils/validations'

@@ -6,9 +6,10 @@ import {
   deleteProductsToCart,
   getCartById,
   getCarts,
+  purchase,
   updateProductToCart,
   updateProductsToCart
-} from '../dao/mongo/controllers/cart.controller'
+} from '../dao/controllers/cart.controller'
 import { authorization } from '../middlewares/authorization'
 
 const router = Router()
@@ -20,14 +21,16 @@ router
 
 router
   .route('/:cid')
-  .get(getCartById)
-  .put(updateProductsToCart)
-  .delete(deleteProductsToCart)
+  .get(authorization(['admin', 'user']), getCartById)
+  .put(authorization(['admin', 'user']), updateProductsToCart)
+  .delete(authorization(['admin', 'user']), deleteProductsToCart)
 
 router
   .route('/:cid/products/:pid')
-  .post(addProductToCart)
-  .put(updateProductToCart)
-  .delete(deleteProductToCart)
+  .post(authorization(['admin', 'user']), addProductToCart)
+  .put(authorization(['admin', 'user']), updateProductToCart)
+  .delete(authorization(['admin', 'user']), deleteProductToCart)
+
+router.post('/:cid/purchase', authorization(['admin', 'user']), purchase)
 
 export default router

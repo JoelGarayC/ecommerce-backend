@@ -1,8 +1,5 @@
 import { Router } from 'express'
-import {
-  deleteUserById,
-  getUsers
-} from '../dao/mongo/controllers/user.controller'
+import { deleteUserById, getUsers } from '../dao/controllers/user.controller'
 import { authorization } from '../middlewares/authorization'
 
 const router = Router()

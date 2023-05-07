@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { type IProduct } from '../../../types/IProduct'
+import { type IProduct, type ProductProps } from '../../../types/IProduct'
 import {
   validateExistCodeFs,
   validateFields,
@@ -9,7 +9,14 @@ import {
   validateType
 } from '../../../utils/validations'
 
-const filePath = path.join('../../src/store/products.json')
+const filePath = path.join(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  'store',
+  'products.json'
+)
 
 class ProductService {
   path: string
@@ -18,25 +25,39 @@ class ProductService {
     this.path = filePath
   }
 
-  async getProducts(): Promise<IProduct[]> {
-    try {
-      // validacion si existe el archivo products.json
-      validateFileJson(this.path)
+  async getProducts({
+    page = '',
+    limit = '',
+    sort = '',
+    query = ''
+  }: ProductProps): Promise<any> {
+    // validacion si existe el archivo products.json
+    validateFileJson(this.path)
 
-      const data = await fs.promises.readFile(this.path, 'utf-8')
-      return JSON.parse(data)
-    } catch (err: any) {
-      return err.message
+    const dataJSON = await fs.promises.readFile(this.path, 'utf-8')
+    if (dataJSON === undefined) {
+      throw new Error('Productos no encontrados')
     }
+    const data = {
+      docs: JSON.parse(dataJSON)
+    }
+    return { ...data }
   }
 
   async getProductById(id: string): Promise<IProduct> {
     try {
       if (id === undefined) throw new Error('Falta el Id del producto')
 
-      const products = await this.getProducts()
+      const products = await this.getProducts({
+        page: '',
+        limit: '',
+        sort: '',
+        query: ''
+      })
 
-      const productById = products.find((product) => product.id === id)
+      const productById = products.find(
+        (product: IProduct) => product.id === id
+      )
       if (productById === undefined) {
         throw new Error(`Producto con ID: ${id} no encontrado`)
       }
@@ -54,7 +75,12 @@ class ProductService {
       validateOther(product)
 
       // obtencion de la BD de products
-      const products = await this.getProducts()
+      const products = await this.getProducts({
+        page: '',
+        limit: '',
+        sort: '',
+        query: ''
+      })
 
       // validacion si existe el codigo en la lista
       validateExistCodeFs(product, products)
@@ -87,10 +113,15 @@ class ProductService {
       if (id === undefined) throw new Error('Falta el Id del producto')
 
       // obtencion de la BD de products
-      const products = await this.getProducts()
+      const products = await this.getProducts({
+        page: '',
+        limit: '',
+        sort: '',
+        query: ''
+      })
 
       // validacion si existe el codigo en la lista
-      const updateProd = products.find((prod) => prod.id === id)
+      const updateProd = products.find((prod: IProduct) => prod.id === id)
       if (updateProd == null) {
         throw new Error(
           `Producto con ID: "${id}" no se encontró en la lista, no se pudo actualizar!`
@@ -98,7 +129,9 @@ class ProductService {
       }
 
       // obtencion del indice del producto
-      const productIndex = products.findIndex((prod) => prod.id === id)
+      const productIndex = products.findIndex(
+        (prod: IProduct) => prod.id === id
+      )
       products[productIndex] = { ...updateProd, ...newProduct }
 
       // actualizando la lista de productos
@@ -113,18 +146,23 @@ class ProductService {
     try {
       if (id === undefined) throw new Error('Falta el Id del producto')
       // obtencion de la BD de products
-      const products = await this.getProducts()
+      const products = await this.getProducts({
+        page: '',
+        limit: '',
+        sort: '',
+        query: ''
+      })
 
       // validacion si existe el codigo en la lista
-      const idProd = products.some((prod) => prod.id === id)
-      if (!idProd) {
+      const idProd = products.some((prod: IProduct) => prod.id === id)
+      if (idProd === null) {
         throw new Error(
           `Producto con ID: "${id}" no se encontró en la lista, no se pudo eliminarlo!`
         )
       }
 
       // filtrando la lista de productos
-      const productsF = products.filter((prod) => prod.id !== id)
+      const productsF = products.filter((prod: IProduct) => prod.id !== id)
 
       // actualizando la lista de productos
       await fs.promises.writeFile(this.path, JSON.stringify(productsF))

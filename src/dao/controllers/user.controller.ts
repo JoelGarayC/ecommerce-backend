@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
-import { responseCustomError } from '../../../utils/CustomError'
-import UserService from '../services/user.service'
+import { responseCustomError } from '../../utils/CustomError'
+import UserService from '../mongo/services/user.service'
 
 const user = new UserService()
 

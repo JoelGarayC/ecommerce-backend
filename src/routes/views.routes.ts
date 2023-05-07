@@ -10,7 +10,7 @@ import {
   login,
   profile,
   register
-} from '../dao/mongo/controllers/views.controller'
+} from '../dao/controllers/views.controller'
 import { authorization } from '../middlewares/authorization'
 
 const router = Router()

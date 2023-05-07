@@ -1,7 +1,8 @@
 import { type Request, type Response } from 'express'
-import { NODE_ENV } from '../../../config'
-import { responseCustomError } from '../../../utils/CustomError'
-import SessionService from '../services/session.service'
+import { NODE_ENV } from '../../config'
+import { responseCustomError } from '../../utils/CustomError'
+import UserDTO from '../DTOs/User.dto'
+import SessionService from '../mongo/services/session.service'
 
 const user = new SessionService()
 
@@ -67,9 +68,12 @@ export async function current(req: any, res: Response): Promise<void> {
 
   try {
     const data = await user.current({ uid, role })
+    // solo información necesaria se le envia al usuario
+    const dataDTO = new UserDTO(data)
+
     res.status(201).json({
       status: 'success',
-      user: data
+      user: dataDTO
     })
   } catch (err) {
     responseCustomError(res, err)
@@ -78,14 +82,14 @@ export async function current(req: any, res: Response): Promise<void> {
 
 export async function logout(_req: Request, res: Response): Promise<void> {
   try {
-    // const data = await user.logout(res)
-    // res.status(201).json({
-    //   status: 'success',
-    //   message: data
-    // })
-    await user.logout(res)
+    const data = await user.logout(res)
+    res.status(201).json({
+      status: 'success',
+      message: data
+    })
+    // await user.logout(res)
 
-    res.status(201).redirect('/login')
+    // res.status(201).redirect('/login')
   } catch (err) {
     responseCustomError(res, err)
   }

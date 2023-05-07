@@ -5,7 +5,7 @@ import {
   getProductById,
   getProducts,
   updateProductById
-} from '../dao/mongo/controllers/product.controller'
+} from '../dao/controllers/product.controller'
 import { authorization } from '../middlewares/authorization'
 import { uploader } from '../middlewares/uploaderImages'
 

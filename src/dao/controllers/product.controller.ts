@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { type Request, type Response } from 'express'
-import { type IProduct } from '../../../types/IProduct'
-import { responseCustomError } from '../../../utils/CustomError'
-import {
-  buildUpdateProduct,
-  uploadImages
-} from '../../../utils/uploadImagesCloud'
-import ProductService from '../services/product.service'
+import { type IProduct } from '../../types/IProduct'
+import { responseCustomError } from '../../utils/CustomError'
+import { buildUpdateProduct, uploadImages } from '../../utils/uploadImagesCloud'
+import ProductDTO from '../DTOs/Product.dto'
+
+// OPCION MEMORY  => comentar la linea siguiente y descomentar el que sigue
+import ProductService from '../mongo/services/product.service'
+// import ProductService from '../memory/services/product.service'
 
 const product = new ProductService()
 
@@ -30,7 +32,7 @@ export async function getProducts(req: Request, res: Response): Promise<void> {
       prevLink: !data.hasPrevPage ? null : data.prevUrl,
       nextLink: !data.hasNextPage ? null : data.nextUrl
     })
-  } catch (err) {
+  } catch (err: any) {
     responseCustomError(res, err)
   }
 }
@@ -67,7 +69,9 @@ export async function addProduct(req: Request, res: Response): Promise<void> {
       status: true
     }
 
-    const data = await product.addProduct(newProduct)
+    const productDTO = new ProductDTO(newProduct)
+
+    const data = await product.addProduct(productDTO)
     res.status(201).json({
       status: 'success',
       message: data

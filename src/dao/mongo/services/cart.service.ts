@@ -1,13 +1,32 @@
 import type mongoose from 'mongoose'
+import { v4 as uuidv4 } from 'uuid'
 import { type ICart, type ICartItem } from '../../../types/ICart'
+import { type ITicket } from '../../../types/ITicket'
 import { CustomError } from '../../../utils/CustomError'
 import { validateIdCart, validateIdProduct } from '../../../utils/validations'
 import { Cart } from '../models/Cart'
 import { Product } from '../models/Product'
+import { Ticket } from '../models/Ticket'
+import { User } from '../models/User'
 
 interface ReturnCart {
   message: string
   id: mongoose.Types.ObjectId
+}
+
+interface ReturnCheckProd {
+  stock: number
+  price: number
+}
+
+interface ReturnPurchased {
+  purchasedProducts: string[]
+  unPurchasedProducts: string[]
+  totalAmount: number
+}
+
+interface ReturnPurchasedAndTicket extends ReturnPurchased {
+  ticket?: ITicket
 }
 
 class CartService {
@@ -198,6 +217,107 @@ class CartService {
     await Cart.updateOne({ _id: idCart }, { $set: { products: [] } })
     return 'Todos los productos del carrito eliminados correctamente'
   }
+
+  async purchase(
+    idCart: string,
+    idUser: string
+  ): Promise<ReturnPurchasedAndTicket> {
+    await validateIdCart(idCart)
+    const cartById = await Cart.findById(idCart)
+    if (cartById === null) {
+      throw new CustomError(
+        `Carrito con ID: ${idCart}, no se encontró los productos`,
+        400
+      )
+    }
+    const data = await checkCartStock(cartById)
+
+    if (
+      data.totalAmount === 0 &&
+      data.unPurchasedProducts.length === 0 &&
+      data.purchasedProducts.length === 0
+    ) {
+      throw new CustomError('No hay productos en el carrito', 400)
+    }
+
+    // actualizar el carrito del usuario, con los productos
+    // que no pudieron ser comprados
+    const user = await User.findById(idUser)
+    if (data.unPurchasedProducts.length > 0) {
+      if (user !== null) {
+        const idCart = user.cart
+        // eliminamos del carrito los productos comprados
+        await Cart.updateOne(
+          { _id: idCart },
+          {
+            $pull: { products: { product: { $in: data.purchasedProducts } } }
+          }
+        )
+      }
+    }
+
+    // crear el ticket si hay productos comprados
+    if (data.purchasedProducts.length > 0) {
+      const code = uuidv4()
+      const ticket = await Ticket.create({
+        code,
+        amount: data.totalAmount,
+        purchaser: user?.email,
+        purchase_datetime: Date.now()
+      })
+      return { ...data, ticket }
+    }
+
+    return { ...data }
+  }
+}
+
+async function checkCartStock(cartData: ICart): Promise<ReturnPurchased> {
+  // productos comprados y productos no comprados
+  const purchasedProducts: string[] = []
+  const unPurchasedProducts: string[] = []
+  let totalAmount = 0
+
+  for (const item of cartData.products) {
+    const productId = item.product
+    const quantity = item.quantity
+
+    const { stock, price } = await checkProductStock(productId, quantity)
+
+    // agrega solo los que tiene stock o solo los que se pueden comprar
+    if (stock > 0) {
+      purchasedProducts.push(productId)
+      totalAmount += price * quantity
+    } else {
+      unPurchasedProducts.push(productId)
+    }
+  }
+
+  return { purchasedProducts, unPurchasedProducts, totalAmount }
+}
+
+async function checkProductStock(
+  productId: string,
+  quantity: number
+): Promise<ReturnCheckProd> {
+  const itemProduct = await Product.findById(productId)
+
+  if (itemProduct === null) {
+    return { stock: 0, price: 0 }
+  }
+
+  // Lógica para obtener la información del producto y verificar el stock
+  // Devuelve si hay suficiente stock para la cantidad dada
+
+  if (itemProduct.stock >= quantity) {
+    // actualizando el stock del producto
+    const newStock = itemProduct.stock - quantity
+    const data = await Product.findByIdAndUpdate(productId, { stock: newStock })
+    if (data !== null) {
+      return { stock: data.stock, price: data.price }
+    }
+  }
+  return { stock: 0, price: 0 }
 }
 
 export default CartService

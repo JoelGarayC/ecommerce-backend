@@ -1,8 +1,8 @@
 import { type Request, type Response } from 'express'
-import { responseCustomError } from '../../../utils/CustomError'
-import CartService from '../services/cart.service'
-import ProductService from '../services/product.service'
-import UserService from '../services/user.service'
+import { responseCustomError } from '../../utils/CustomError'
+import CartService from '../mongo/services/cart.service'
+import ProductService from '../mongo/services/product.service'
+import UserService from '../mongo/services/user.service'
 
 const product = new ProductService()
 const cart = new CartService()

@@ -16,8 +16,6 @@ Para configurar las variables de entorno de tu aplicación, debes seguir los sig
 
    - **JWT_SECRET**: Aquí debes proporcionar una cadena aleatoria y segura para ser utilizada como clave secreta para la generación de tokens JWT.
 
-   - **PERSISTENCE**: Aquí debes especificar el tipo de persistencia que deseas utilizar. Puedes elegir entre `"mongo"` o `"memory"`.
-
    - **NODE_ENV**: Aquí debes especificar el entorno de tu aplicación. Puedes elegir entre `"development"` y `"production"`. Si tu aplicación está en entorno de desarrollo, tambien puedes dejarlo sin completar.
 
    - **URL_BACKEND**: Si estás en un entorno de producción y tu aplicación consume una API de backend, debes proporcionar la URL de tu servidor backend aquí.
