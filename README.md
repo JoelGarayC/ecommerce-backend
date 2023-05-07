@@ -1,3 +1,21 @@
+## TERCERA ENTREGA DEL PROYECTO FINAL
+
+---
+
+<br>
+
+Comandos par aejecutar la aplicación:
+
+En desarrollo:
+
+1. npm install
+2. npm run dev
+
+En producción:
+
+3. npm run build
+4. npm run start
+
 ## VARIABLES DE ENTORNO
 
 ---
@@ -31,3 +49,7 @@ Para configurar las variables de entorno de tu aplicación, debes seguir los sig
    - **GITHUB_CLIENT_ID**: Proporciona el ID del cliente de GitHub para permitir que tu aplicación se autentique con GitHub.
 
    - **GITHUB_CLIENT_SECRET**: Proporciona el ID secreto del cliente de GitHub para permitir que tu aplicación se autentique con GitHub.
+
+   - **NODEMAILER_USER**: Proporciona el usuario del servicio de correo que se usará para enviar correos electrónicos.
+
+   - **NODEMAILER_PASS**: Proporciona la contraseña del usuario del servicio de correo que se usará para enviar correos electrónicos.

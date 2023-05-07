@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { type ICart, type ICartItem } from '../../../types/ICart'
 import { type ITicket } from '../../../types/ITicket'
 import { CustomError } from '../../../utils/CustomError'
+import { sendConfirmEmail } from '../../../utils/sendConfirmEmail'
 import { validateIdCart, validateIdProduct } from '../../../utils/validations'
 import { Cart } from '../models/Cart'
 import { Product } from '../models/Product'
@@ -265,6 +266,7 @@ class CartService {
         purchaser: user?.email,
         purchase_datetime: Date.now()
       })
+      await sendConfirmEmail(user?.email as string, code)
       return { ...data, ticket }
     }
 

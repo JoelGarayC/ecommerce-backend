@@ -4,6 +4,7 @@ import { type CorsOptions } from 'cors'
 import { type Express } from 'express'
 import { create } from 'express-handlebars'
 import handlebars from 'handlebars'
+import { createTransport } from 'nodemailer'
 import { join } from 'path'
 
 const {
@@ -17,7 +18,9 @@ const {
   URL_FRONTEND,
   URL_BACKEND,
   GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET
+  GITHUB_CLIENT_SECRET,
+  NODEMAILER_USER,
+  NODEMAILER_PASS
 } = process.env
 
 const version = '/v1'
@@ -80,11 +83,21 @@ export function configCloudinary(): void {
   })
 }
 
+export const transporter = createTransport({
+  service: 'gmail',
+  auth: {
+    user: NODEMAILER_USER as string,
+    pass: NODEMAILER_PASS as string
+  }
+})
+
 export {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   JWT_SECRET,
   MONGODB_URI,
+  NODEMAILER_PASS,
+  NODEMAILER_USER,
   NODE_ENV,
   PORT
 }
