@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { type Request, type Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import { type IProduct } from '../../types/IProduct'
 import { responseCustomError } from '../../utils/CustomError'
 import { buildUpdateProduct, uploadImages } from '../../utils/uploadImagesCloud'
@@ -54,7 +54,11 @@ export async function getProductById(
   }
 }
 
-export async function addProduct(req: Request, res: Response): Promise<void> {
+export async function addProduct(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
   const { title, description, code, stock, price, category } = req.body
 
   try {

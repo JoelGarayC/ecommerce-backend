@@ -1,7 +1,7 @@
 import mongoose, { type PaginateResult } from 'mongoose'
 import { api } from '../../../config'
 import { type IProduct, type ProductProps } from '../../../types/IProduct'
-import { CustomError } from '../../../utils/CustomError'
+import { CustomError, errDictionary } from '../../../utils/CustomError'
 import {
   validateFields,
   validateIdProduct,
@@ -43,12 +43,12 @@ class ProductService {
 
   async getProductById(id: string): Promise<IProduct> {
     if (!ObjectId.isValid(id)) {
-      throw new CustomError(`El ID: ${id} no es válido`, 400)
+      throw new CustomError(errDictionary.INVALID_PRODUCT_ID, 400)
     }
 
     const productById = await Product.findById(id).lean()
     if (productById === null) {
-      throw new CustomError(`Producto con ID: ${id} no encontrado`, 404)
+      throw new CustomError(errDictionary.PRODUCT_NOT_FOUND, 404)
     }
     return productById
   }

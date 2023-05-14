@@ -6,7 +6,7 @@ import { Cart } from '../dao/mongo/models/Cart'
 import { Product } from '../dao/mongo/models/Product'
 import { type IProduct, type IThumbnail } from '../types/IProduct'
 import { type IUser } from '../types/IUser'
-import { CustomError } from './CustomError'
+import { CustomError, errDictionary } from './CustomError'
 const { ObjectId } = mongoose.Types
 
 export function validateFields(product: IProduct): void {
@@ -76,26 +76,23 @@ export function validateOther(product: IProduct): void {
 
 export async function validateIdProduct(idProduct: string): Promise<void> {
   if (!ObjectId.isValid(idProduct)) {
-    throw new CustomError(`El ID: ${idProduct}, no es válido`, 400)
+    throw new CustomError(errDictionary.INVALID_PRODUCT_ID, 400)
   }
 
   const productById = await Product.findById(idProduct)
   if (productById === null) {
-    throw new CustomError(
-      `No se encontró el producto con ID: ${idProduct} `,
-      404
-    )
+    throw new CustomError(errDictionary.PRODUCT_NOT_FOUND, 404)
   }
 }
 
 export async function validateIdCart(idCart: string): Promise<void> {
   if (!ObjectId.isValid(idCart)) {
-    throw new CustomError(`El ID: ${idCart} del carrito no es válido`, 400)
+    throw new CustomError(errDictionary.INVALID_CART_ID, 400)
   }
 
   const cartById = await Cart.findById(idCart)
   if (cartById === null) {
-    throw new CustomError(`No se encontró el carrito con ID: ${idCart}`, 404)
+    throw new CustomError(errDictionary.CART_NOT_FOUND, 404)
   }
 }
 

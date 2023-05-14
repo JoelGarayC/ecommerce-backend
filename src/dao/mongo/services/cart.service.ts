@@ -2,7 +2,7 @@ import type mongoose from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import { type ICart, type ICartItem } from '../../../types/ICart'
 import { type ITicket } from '../../../types/ITicket'
-import { CustomError } from '../../../utils/CustomError'
+import { CustomError, errDictionary } from '../../../utils/CustomError'
 import { sendConfirmEmail } from '../../../utils/sendConfirmEmail'
 import { validateIdCart, validateIdProduct } from '../../../utils/validations'
 import { Cart } from '../models/Cart'
@@ -41,10 +41,7 @@ class CartService {
 
     const cartById = await Cart.findById(id).populate('products.product')
     if (cartById === null) {
-      throw new CustomError(
-        `Carrito con ID: ${id}, no se encontró los productos`,
-        404
-      )
+      throw new CustomError(errDictionary.CART_PRODUCTS_NOT_FOUND, 404)
     }
     return cartById
   }
@@ -63,7 +60,7 @@ class CartService {
 
     const cartById = await Cart.findById(idCart)
     if (cartById === null) {
-      throw new CustomError(`No se encontró el carrito con ID: ${idCart}`, 404)
+      throw new CustomError(errDictionary.CART_NOT_FOUND, 404)
     }
 
     // Verificar si el producto ya existe en el carrito, si existe aumente el quantity
@@ -102,10 +99,7 @@ class CartService {
     quantity: string
   ): Promise<string> {
     if (quantity === undefined) {
-      throw new CustomError(
-        'Escribe la cantidad de ejemplares del producto en el "body", FORMATO: { \'quantity\': valor }',
-        400
-      )
+      throw new CustomError(errDictionary.MISSING_QUANTITY_FORMAT, 400)
     }
     await validateIdCart(idCart)
     await validateIdProduct(idProduct)
@@ -115,10 +109,7 @@ class CartService {
       'products.product': idProduct
     })
     if (existProdinCart === null) {
-      throw new CustomError(
-        `El Producto con ID: ${idProduct} no se encontró en el carrito`,
-        404
-      )
+      throw new CustomError(errDictionary.PRODUCT_NOT_FOUND_IN_CART, 404)
     }
 
     // Si el producto ya existe en el carrito, se actualiza la cantidad
@@ -138,7 +129,7 @@ class CartService {
     await validateIdCart(idCart)
 
     if (!Array.isArray(products)) {
-      throw new CustomError('Los productos deben ser un array válido', 400)
+      throw new CustomError(errDictionary.INVALID_PRODUCTS_ARRAY, 400)
     }
 
     // validacion del arreglo de productos, de acueerdo al formato
@@ -183,10 +174,7 @@ class CartService {
       'products.product': idProduct
     })
     if (existProdinCart === null) {
-      throw new CustomError(
-        `El Producto con ID: ${idProduct} no se encontró en el carrito`,
-        404
-      )
+      throw new CustomError(errDictionary.PRODUCT_NOT_FOUND_IN_CART, 404)
     }
 
     // Eliminando el producto con id del carrito
@@ -204,7 +192,7 @@ class CartService {
       'products.product'
     )
     if (cart === null) {
-      throw new CustomError(`No se encontró el carrito con ID: ${idCart}`, 404)
+      throw new CustomError(errDictionary.CART_NOT_FOUND, 404)
     }
 
     const productsInCart = cart.products
