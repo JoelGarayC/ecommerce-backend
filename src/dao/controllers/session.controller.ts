@@ -21,7 +21,7 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     const cookieOptions: any = {
       // no accede desde el front
-      // httpOnly: true,
+      httpOnly: true,
       expires: new Date(Date.now() + data.expiresIn * 1000)
     }
 
@@ -32,7 +32,9 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     res.cookie('token', data.token, cookieOptions).status(201).json({
       status: 'success',
-      message: 'usuario registrado'
+      message: 'usuario registrado',
+      token: data.token,
+      expiresIn: data.expiresIn
     })
   } catch (err) {
     responseCustomError(res, err)
@@ -47,7 +49,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     const cookieOptions: any = {
       // no accede desde el front
-      // httpOnly: true,
+      httpOnly: true,
       expires: new Date(Date.now() + data.expiresIn * 1000)
     }
 
@@ -58,7 +60,9 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     res.cookie('token', data.token, cookieOptions).status(201).json({
       status: 'success',
-      message: 'sesión iniciada'
+      message: 'sesión iniciada',
+      token: data.token,
+      expiresIn: data.expiresIn
     })
   } catch (err) {
     responseCustomError(res, err)
