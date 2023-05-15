@@ -55,9 +55,12 @@ class SessionService {
     return user
   }
 
-  async logout(res: Response): Promise<string> {
-    res.clearCookie('token')
-    return 'sesión cerrada'
+  async logout(res: Response): Promise<void> {
+    const message = 'sesión cerrada'
+    res.clearCookie('token').status(201).json({
+      status: 'success',
+      message
+    })
   }
 }
 

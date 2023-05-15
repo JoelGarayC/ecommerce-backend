@@ -88,14 +88,7 @@ export async function current(req: any, res: Response): Promise<void> {
 
 export async function logout(_req: Request, res: Response): Promise<void> {
   try {
-    const data = await user.logout(res)
-    res.status(201).json({
-      status: 'success',
-      message: data
-    })
-    // await user.logout(res)
-
-    // res.status(201).redirect('/login')
+    await user.logout(res)
   } catch (err) {
     responseCustomError(res, err)
   }
