@@ -22,7 +22,7 @@ router.post(
   login
 )
 router.get('/current', authorization(['admin', 'user']), current)
-router.post('/logout', authorization(['admin', 'user']), logout)
+router.post('/logout', logout)
 
 router.get(
   '/github',
