@@ -20,8 +20,9 @@ export async function register(req: Request, res: Response): Promise<void> {
     })
 
     const cookieOptions: any = {
-      httpOnly: true,
-      maxAge: data.expiresIn
+      // no accede desde el front
+      // httpOnly: true,
+      expires: new Date(Date.now() + data.expiresIn * 1000)
     }
 
     if (NODE_ENV === 'production') {
@@ -45,8 +46,9 @@ export async function login(req: Request, res: Response): Promise<void> {
     const data = await user.login({ email, password })
 
     const cookieOptions: any = {
-      httpOnly: true,
-      maxAge: data.expiresIn
+      // no accede desde el front
+      // httpOnly: true,
+      expires: new Date(Date.now() + data.expiresIn * 1000)
     }
 
     if (NODE_ENV === 'production') {

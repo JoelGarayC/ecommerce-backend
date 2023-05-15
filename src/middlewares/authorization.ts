@@ -6,7 +6,14 @@ import { type UserRole } from '../types/IUser'
 export const authorization = (role: UserRole[]) => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
-      const token = req?.cookies?.token
+      const authHeader = req.headers.authorization as string
+      if (!authHeader.startsWith('Bearer ')) {
+        throw new Error('Es necesario un token Bearer en el header')
+      }
+      const tokenHeader = authHeader.substring(7)
+
+      // token  desde cookie o headers
+      const token = req?.cookies?.token ?? tokenHeader
       if (token === undefined || req.user !== undefined) {
         throw new Error('No autorizado, ¡Inicia sesión!')
       }
@@ -41,6 +48,8 @@ function errorTokens(message: string): string {
       return 'Token no activo'
     case 'jwt payload is invalid':
       return 'Payload inválido'
+    case 'jwt must be provided':
+      return 'El Token debe ser proporcionado'
     default:
       return message
   }
