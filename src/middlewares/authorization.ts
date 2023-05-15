@@ -7,9 +7,6 @@ export const authorization = (role: UserRole[]) => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
       const authHeader = req.headers.authorization as string
-      if (!authHeader.startsWith('Bearer ')) {
-        throw new Error('Es necesario un token Bearer en el header')
-      }
       const tokenHeader = authHeader.substring(7)
 
       // token  desde cookie o headers
