@@ -23,6 +23,14 @@ export async function generarProducts(): Promise<IProduct[]> {
         {
           name: faker.commerce.productName(),
           path: faker.image.url()
+        },
+        {
+          name: faker.commerce.productName(),
+          path: faker.image.url()
+        },
+        {
+          name: faker.commerce.productName(),
+          path: faker.image.url()
         }
       ]
     }
