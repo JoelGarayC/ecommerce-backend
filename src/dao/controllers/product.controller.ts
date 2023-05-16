@@ -32,7 +32,7 @@ export async function getProducts(req: Request, res: Response): Promise<void> {
       prevLink: !data.hasPrevPage ? null : data.prevUrl,
       nextLink: !data.hasNextPage ? null : data.nextUrl
     })
-  } catch (err: any) {
+  } catch (err) {
     responseCustomError(res, err)
   }
 }
