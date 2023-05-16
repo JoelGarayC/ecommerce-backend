@@ -7,9 +7,9 @@ import {
   register
 } from '../dao/controllers/session.controller'
 import { authorization } from '../middlewares/authorization'
+import { validatorExpressError } from '../middlewares/validatorError'
 import { verifyCart } from '../middlewares/verifyCart'
 import { validateLoginBody, validateRegisterBody } from '../utils/validations'
-import { validatorExpressError } from './validatorError'
 
 const router = Router()
 
