@@ -6,8 +6,8 @@ import { type UserRole } from '../types/IUser'
 export const authorization = (role: UserRole[]) => {
   return (req: any, res: Response, next: NextFunction): void => {
     try {
-      const authHeader = req.headers.authorization as string
-      const tokenHeader = authHeader.substring(7)
+      const authHeader = req.headers.authorization
+      const tokenHeader = authHeader?.substring(7)
 
       // token  desde cookie o headers
       const token = req?.cookies?.token ?? tokenHeader

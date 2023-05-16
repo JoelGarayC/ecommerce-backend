@@ -1,4 +1,5 @@
 import bodyparser from 'body-parser'
+import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { type Express } from 'express'
@@ -25,6 +26,7 @@ class App {
   }
 
   private middlewares(): void {
+    this.app.use(compression())
     configCloudinary()
     configHandlebars(this.app)
     initializePassport()
