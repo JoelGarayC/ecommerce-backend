@@ -1,4 +1,5 @@
 import { Router, type Request, type Response } from 'express'
+import { loggerTest } from '../dao/controllers/loggerTest.controller'
 import { mockProducts } from '../dao/controllers/mockProducts.controller'
 import carts from './carts.routes'
 import products from './products.routes'
@@ -13,6 +14,7 @@ router.use('/sessions', sessions)
 router.use('/users', users)
 
 router.get('/mockingproducts', mockProducts)
+router.get('/loggerTest', loggerTest)
 
 router.get('/', async (_req: Request, res: Response) => {
   res.json({

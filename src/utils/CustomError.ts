@@ -1,4 +1,5 @@
 import { type Response } from 'express'
+import { logger } from './logger'
 
 export const errDictionary = {
   INVALID_PRODUCT_ID: 'El id del producto no es válido',
@@ -24,6 +25,8 @@ export class CustomError extends Error {
 export const responseCustomError = (res: Response, err: any): void => {
   const statusCode = err.statusCode ?? 500
   const message = err.message ?? 'Error en el servidor'
+
+  logger.warn({ msg: message, statusCode })
 
   res.status(statusCode).json({
     status: 'error',

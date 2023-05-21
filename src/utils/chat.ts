@@ -1,6 +1,7 @@
 import type http from 'http'
 import { Server } from 'socket.io'
 import MessageService from '../dao/mongo/services/message.service'
+import { logger } from './logger'
 
 const message = new MessageService()
 
@@ -8,13 +9,13 @@ export const initChat = (server: http.Server): void => {
   const io = new Server(server)
 
   io.on('connection', async (socket) => {
-    console.log(`Un nuevo cliente se ha conectado con el ID: ${socket.id}`)
+    logger.info(`Un nuevo cliente se ha conectado con el ID: ${socket.id}`)
 
     try {
       const msgs = await message.getMessages()
       io.emit('update-chat', msgs)
     } catch (err: any) {
-      console.log(err.message)
+      logger.error(err?.message)
       io.emit('chat', 'error')
     }
 
@@ -31,8 +32,8 @@ export const initChat = (server: http.Server): void => {
         } else {
           socket.emit('chat', 'error')
         }
-      } catch (error) {
-        console.error(error)
+      } catch (err: any) {
+        logger.error(err?.message)
         socket.emit('chat', 'error')
       }
     })

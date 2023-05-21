@@ -1,4 +1,5 @@
 import { genSalt, hash } from 'bcryptjs'
+import { logger } from './logger'
 
 export async function hashPassword(password: string): Promise<string> {
   try {
@@ -6,6 +7,7 @@ export async function hashPassword(password: string): Promise<string> {
     const hashedPassword = await hash(password, salt)
     return hashedPassword
   } catch (err: any) {
+    logger.error(`Ocurrió un error en hasPassword: ${err?.message as string} `)
     throw new Error(err.message)
   }
 }

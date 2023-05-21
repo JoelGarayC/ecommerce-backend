@@ -3,6 +3,7 @@ import passportGithub from 'passport-github2'
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, api } from '../config'
 import { User } from '../dao/mongo/models/User'
 import { generateToken } from './generateToken'
+import { logger } from './logger'
 
 const GitHubStrategy = passportGithub.Strategy
 
@@ -39,7 +40,10 @@ const initializePassport = (): void => {
             const { token, expiresIn, email } = await generateToken(user)
             done(null, { token, expiresIn, email })
           }
-        } catch (error) {
+        } catch (error: any) {
+          logger.error(
+            `Ocurrió un error en passport: ${error?.message as string} `
+          )
           return done(error)
         }
       }

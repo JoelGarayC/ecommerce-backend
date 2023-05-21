@@ -1,4 +1,5 @@
 import { NODEMAILER_USER, transporter } from '../config'
+import { logger } from './logger'
 
 export async function sendConfirmEmail(
   email: string,
@@ -12,8 +13,10 @@ export async function sendConfirmEmail(
       html: `<p>Gracias por tu compra. Tu ticket es: ${ticketCode}</p>`
     })
 
-    console.log(`Email enviado: ${info.messageId}`)
+    logger.info(`Email enviado: ${info.messageId}`)
   } catch (error) {
-    console.error(error)
+    logger.warn(
+      `Ocurrió un error al enviar el email ${email}, código de ticket ${ticketCode}`
+    )
   }
 }
