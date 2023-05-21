@@ -43,13 +43,6 @@ const productionLogger = winston.createLogger({
         winston.format.colorize(),
         winston.format.combine(winston.format.simple())
       )
-    }),
-    new winston.transports.File({
-      filename: 'logs/errors.log',
-      level: 'error',
-      format: winston.format.combine(
-        winston.format.combine(winston.format.simple())
-      )
     })
   ]
 })
