@@ -48,7 +48,7 @@ class SessionService {
   }
 
   async current({ uid }: IUserToken): Promise<IUser> {
-    const user = await User.findById(uid).populate('cart.products')
+    const user = await User.findById(uid).lean()
     if (user === null) {
       throw new CustomError('Usuario no encontrado', 403)
     }
