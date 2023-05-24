@@ -41,7 +41,12 @@ let allowedOrigins: string[] = []
 if (NODE_ENV === 'production') {
   allowedOrigins = [urlBase, api.urlBase, URL_FRONTEND as string]
 } else {
-  allowedOrigins = [urlBase, api.urlBase, 'http://localhost:5173']
+  allowedOrigins = [
+    urlBase,
+    api.urlBase,
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+  ]
 }
 
 export const corsOptions: CorsOptions = {
