@@ -1,4 +1,4 @@
-import { type IUser } from '../../../types/IUser'
+import { type IUser, type UserRole } from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
 import { Cart } from '../models/Cart'
 import { User } from '../models/User'
@@ -26,6 +26,23 @@ class UserService {
       throw new CustomError('No se encontró al usuario', 401)
     }
     return user
+  }
+
+  async getUserRole(uid: string): Promise<UserRole> {
+    const user = await User.findById(uid)
+    if (user === null) {
+      throw new CustomError('No se encontró al usuario', 401)
+    }
+    return user?.role as UserRole
+  }
+
+  async updateUserRole(uid: string, newRole: string): Promise<string> {
+    const user = await User.findById(uid)
+    if (user === null) {
+      throw new CustomError('No se encontró al usuario', 401)
+    }
+    await user.updateOne({ role: newRole })
+    return 'Rol de usuario actualizado'
   }
 
   async deleteUserById(uid: string): Promise<string> {

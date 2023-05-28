@@ -45,3 +45,23 @@ export async function deleteUserById(
     responseCustomError(res, err)
   }
 }
+
+export async function changeRolePremium(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { uid } = req.params
+
+  try {
+    const userRole = await user.getUserRole(uid)
+    const newRole = userRole === 'user' ? 'premium' : 'user'
+
+    const data = await user.updateUserRole(uid, newRole)
+    res.status(201).json({
+      status: 'success',
+      message: data
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
