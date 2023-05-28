@@ -14,16 +14,20 @@ const router = Router()
 router
   .route('/')
   .get(getProducts)
-  .post(uploader.array('thumbnails'), authorization(['admin']), addProduct)
+  .post(
+    uploader.array('thumbnails'),
+    authorization(['admin', 'premium']),
+    addProduct
+  )
 
 router
   .route('/:pid')
   .get(getProductById)
   .put(
     uploader.array('thumbnails'),
-    authorization(['admin']),
+    authorization(['admin', 'premium']),
     updateProductById
   )
-  .delete(authorization(['admin']), deleteProductById)
+  .delete(authorization(['admin', 'premium']), deleteProductById)
 
 export default router

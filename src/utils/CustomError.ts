@@ -26,7 +26,9 @@ export const responseCustomError = (res: Response, err: any): void => {
   const statusCode = err.statusCode ?? 500
   const message = err.message ?? 'Error en el servidor'
 
-  logger.warn({ msg: message, statusCode })
+  if (statusCode === 500) {
+    logger.warn(message)
+  }
 
   res.status(statusCode).json({
     status: 'error',

@@ -1,9 +1,9 @@
 import { type Types } from 'mongoose'
 
-export type UserRole = 'admin' | 'user'
+export type UserRole = 'admin' | 'user' | 'premium'
 
 export interface IUser {
-  _id?: Types.ObjectId
+  _id?: Types.ObjectId | string
   firstName?: string
   lastName?: string
   email: string

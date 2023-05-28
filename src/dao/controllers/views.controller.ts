@@ -38,7 +38,7 @@ export async function getProductsById(req: any, res: Response): Promise<void> {
 
     // optiene el id del carrito del usuario logueado
     const { uid } = req.user
-    const { cart } = await user.getUserByID(uid)
+    const { cart } = await user.getUserById(uid)
 
     res.render('productsDetails', { data, cart })
   } catch (err) {
@@ -102,7 +102,7 @@ export async function register(_req: Request, res: Response): Promise<void> {
 export async function profile(req: any, res: Response): Promise<void> {
   const { uid } = req.user
   try {
-    const data = await user.getUserByID(uid)
+    const data = await user.getUserById(uid)
     res.render('profile', {
       data
     })

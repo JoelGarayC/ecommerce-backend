@@ -4,6 +4,7 @@ import {
   current,
   login,
   logout,
+  recoveryPassword,
   register
 } from '../dao/controllers/session.controller'
 import { authorization } from '../middlewares/authorization'
@@ -21,8 +22,9 @@ router.post(
   verifyCart,
   login
 )
-router.get('/current', authorization(['admin', 'user']), current)
+router.get('/current', authorization(['admin', 'user', 'premium']), current)
 router.post('/logout', logout)
+router.post('/recoveryPassword', recoveryPassword)
 
 router.get(
   '/github',

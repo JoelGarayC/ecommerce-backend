@@ -21,15 +21,15 @@ router
 
 router
   .route('/:cid')
-  .get(authorization(['admin', 'user']), getCartById)
-  .put(authorization(['admin', 'user']), updateProductsToCart)
-  .delete(authorization(['admin', 'user']), deleteProductsToCart)
+  .get(authorization(['admin', 'user', 'premium']), getCartById)
+  .put(authorization(['admin', 'user', 'premium']), updateProductsToCart)
+  .delete(authorization(['admin', 'user', 'premium']), deleteProductsToCart)
 
 router
   .route('/:cid/products/:pid')
-  .post(authorization(['admin', 'user']), addProductToCart)
-  .put(authorization(['admin', 'user']), updateProductToCart)
-  .delete(authorization(['admin', 'user']), deleteProductToCart)
+  .post(authorization(['admin', 'user', 'premium']), addProductToCart)
+  .put(authorization(['admin', 'user', 'premium']), updateProductToCart)
+  .delete(authorization(['admin', 'user', 'premium']), deleteProductToCart)
 
 router.post('/:cid/purchase', authorization(['admin', 'user']), purchase)
 

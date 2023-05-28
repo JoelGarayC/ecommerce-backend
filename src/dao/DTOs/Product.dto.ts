@@ -9,6 +9,7 @@ class ProductDTO implements IProduct {
   category: string
   status: boolean
   thumbnails?: IThumbnail[] | undefined
+  owner?: string | undefined
 
   constructor(product: any) {
     this.title = product.title
@@ -19,6 +20,7 @@ class ProductDTO implements IProduct {
     this.category = product.category
     this.status = product.status
     this.thumbnails = product.thumbnails
+    this.owner = product.owner
   }
 }
 

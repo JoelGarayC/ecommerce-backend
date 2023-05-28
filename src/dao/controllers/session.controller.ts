@@ -1,16 +1,19 @@
 import { type Request, type Response } from 'express'
-import { NODE_ENV } from '../../config'
-import { responseCustomError } from '../../utils/CustomError'
+import { NODEMAILER_USER, NODE_ENV, api, transporter } from '../../config'
+import { CustomError, responseCustomError } from '../../utils/CustomError'
+import { logger } from '../../utils/logger'
 import UserDTO from '../DTOs/User.dto'
 import SessionService from '../mongo/services/session.service'
+import UserService from '../mongo/services/user.service'
 
-const user = new SessionService()
+const session = new SessionService()
+const user = new UserService()
 
 export async function register(req: Request, res: Response): Promise<void> {
   const { firstName, lastName, email, password, role, age } = req.body
 
   try {
-    const data = await user.register({
+    const data = await session.register({
       firstName,
       lastName,
       email,
@@ -45,7 +48,7 @@ export async function login(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body
 
   try {
-    const data = await user.login({ email, password })
+    const data = await session.login({ email, password })
 
     const cookieOptions: any = {
       // no accede desde el front
@@ -73,7 +76,7 @@ export async function current(req: any, res: Response): Promise<void> {
   const { uid, role } = req.user
 
   try {
-    const data = await user.current({ uid, role })
+    const data = await session.current({ uid, role })
     // solo información necesaria se le envia al usuario
     const dataDTO = new UserDTO(data)
 
@@ -88,10 +91,47 @@ export async function current(req: any, res: Response): Promise<void> {
 
 export async function logout(_req: Request, res: Response): Promise<void> {
   try {
-    const data = await user.logout(res)
+    const data = await session.logout(res)
     res.status(201).json({
       status: 'success',
       message: data
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function recoveryPassword(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { email } = req.body
+
+  try {
+    if (email === undefined) {
+      throw new CustomError('Escriba el email de envio en el body', 400)
+    }
+    // Obtener el correo electrónico del usuario desde la solicitud
+
+    const use = await user.getUserByEmail(email)
+    // Crear un enlace con el token de restablecimiento de contraseña
+    const resetLink = `${api.url}/resetPassword?token=${use._id as string}`
+
+    // Configurar el contenido del correo electrónico
+    const mailOptions = {
+      from: NODEMAILER_USER as string,
+      to: email,
+      subject: 'Restablecimiento de contraseña',
+      html: `<p>Para restablecer tu contraseña, haz clic en el siguiente enlace: <a href="${resetLink}">${resetLink}</a></p>`
+    }
+
+    const info = await transporter.sendMail(mailOptions)
+
+    logger.info(`Email enviado: ${info.messageId}`)
+
+    res.status(201).json({
+      status: 'success',
+      message: `Mensaje enviado a ${email as string}`
     })
   } catch (err) {
     responseCustomError(res, err)

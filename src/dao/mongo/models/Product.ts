@@ -37,7 +37,8 @@ const ProductSchema = new Schema<IProduct>({
     lowercase: true,
     index: true
   },
-  status: { type: Boolean, required: true }
+  status: { type: Boolean, required: true },
+  owner: { type: String, default: 'admin' }
 })
 
 ProductSchema.plugin(mongoosePaginate)
