@@ -9,7 +9,8 @@ import {
   homePage,
   login,
   profile,
-  register
+  register,
+  resetPassword
 } from '../dao/controllers/views.controller'
 import { authorization } from '../middlewares/authorization'
 
@@ -17,6 +18,7 @@ const router = Router()
 
 router.get('/login', login)
 router.get('/register', register)
+router.get('/resetPassword', resetPassword)
 router.get('/profile', authorization(['admin', 'user', 'premium']), profile)
 
 router.get('/products', getProducts)
@@ -34,6 +36,7 @@ router.get(
 )
 
 router.get('/chat', chat)
+
 router.get('/', homePage)
 
 export default router

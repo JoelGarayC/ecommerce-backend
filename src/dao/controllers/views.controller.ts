@@ -110,3 +110,14 @@ export async function profile(req: any, res: Response): Promise<void> {
     responseCustomError(res, err)
   }
 }
+
+export async function resetPassword(req: any, res: Response): Promise<void> {
+  const { token } = req.query
+  try {
+    res.render('resetPassword', {
+      token
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}

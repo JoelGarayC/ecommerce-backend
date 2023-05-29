@@ -1,6 +1,14 @@
 import { type Request, type Response } from 'express'
-import { NODEMAILER_USER, NODE_ENV, api, transporter } from '../../config'
+import { verify } from 'jsonwebtoken'
+import {
+  JWT_SECRET,
+  NODEMAILER_USER,
+  NODE_ENV,
+  api,
+  transporter
+} from '../../config'
 import { CustomError, responseCustomError } from '../../utils/CustomError'
+import { generateTokenRecoveryPass } from '../../utils/generateToken'
 import { logger } from '../../utils/logger'
 import UserDTO from '../DTOs/User.dto'
 import SessionService from '../mongo/services/session.service'
@@ -112,10 +120,12 @@ export async function recoveryPassword(
       throw new CustomError('Escriba el email de envio en el body', 400)
     }
     // Obtener el correo electrónico del usuario desde la solicitud
-
     const use = await user.getUserByEmail(email)
+    // genera token valido de 1 hora
+    const token = await generateTokenRecoveryPass(use)
+
     // Crear un enlace con el token de restablecimiento de contraseña
-    const resetLink = `${api.url}/resetPassword?token=${use._id as string}`
+    const resetLink = `${api.urlBase}/resetPassword?token=${token}`
 
     // Configurar el contenido del correo electrónico
     const mailOptions = {
@@ -127,11 +137,40 @@ export async function recoveryPassword(
 
     const info = await transporter.sendMail(mailOptions)
 
-    logger.info(`Email enviado: ${info.messageId}`)
+    logger.info(
+      `Email enviado a ${email as string}, messageId: ${info.messageId}`
+    )
 
     res.status(201).json({
       status: 'success',
       message: `Mensaje enviado a ${email as string}`
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function resetPassword(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const token = req.query?.token as string
+  const { newPassword } = req.body
+
+  try {
+    if (token === undefined) {
+      throw new CustomError('JWT token must be provided', 400)
+    }
+    // Verificar el token
+    const payload: any = verify(token, JWT_SECRET as string)
+
+    // Extraer el ID de usuario del token decodificado
+    const uid = payload.uid as string
+
+    const data = await session.resetPassword({ uid, newPassword })
+    res.status(201).json({
+      status: 'success',
+      message: data
     })
   } catch (err) {
     responseCustomError(res, err)

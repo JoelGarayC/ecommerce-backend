@@ -24,11 +24,10 @@ export class CustomError extends Error {
 
 export const responseCustomError = (res: Response, err: any): void => {
   const statusCode = err.statusCode ?? 500
-  const message = statusCode === 500 ? 'Error en el servidor' : err.message
-
   if (statusCode === 500) {
-    logger.warn(message)
+    logger.warn(err.message)
   }
+  const message = statusCode === 500 ? 'Error en el servidor' : err.message
 
   res.status(statusCode).json({
     status: 'error',
