@@ -111,6 +111,17 @@ export async function profile(req: any, res: Response): Promise<void> {
   }
 }
 
+export async function recoveryPassword(
+  _req: any,
+  res: Response
+): Promise<void> {
+  try {
+    res.render('recoveryPassword')
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
 export async function resetPassword(req: any, res: Response): Promise<void> {
   const { token } = req.query
   try {
