@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { type NextFunction, type Request, type Response } from 'express'
+import { type Request, type Response } from 'express'
 import { type IProduct } from '../../types/IProduct'
-import { responseCustomError } from '../../utils/CustomError'
+import { CustomError, responseCustomError } from '../../utils/CustomError'
 import { buildUpdateProduct, uploadImages } from '../../utils/uploadImagesCloud'
 import ProductDTO from '../DTOs/Product.dto'
 
@@ -54,12 +54,9 @@ export async function getProductById(
   }
 }
 
-export async function addProduct(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
+export async function addProduct(req: any, res: Response): Promise<void> {
   const { title, description, code, stock, price, category } = req.body
+  const uid = req.user?.uid
 
   try {
     const newProduct: IProduct = {
@@ -70,7 +67,8 @@ export async function addProduct(
       price: typeof price === 'string' ? parseInt(price) : price,
       category,
       thumbnails: (await uploadImages(req)) ?? [],
-      status: true
+      status: true,
+      owner: req.user.role === 'premium' ? uid : 'admin'
     }
 
     const productDTO = new ProductDTO(newProduct)
@@ -86,13 +84,27 @@ export async function addProduct(
 }
 
 export async function updateProductById(
-  req: Request,
+  req: any,
   res: Response
 ): Promise<void> {
   const { title, description, code, stock, price, category } = req.body
   const { pid } = req.params
+  const userId = req.user.uid
+  const role = req.user.role
 
   try {
+    // Comprobar si el usuario premium es el propietario del producto
+    if (role === 'premium') {
+      // Obtener el producto por su ID
+      const productId = await product.getProductById(pid)
+      if (productId?.owner !== userId) {
+        throw new CustomError(
+          'Acceso denegado. No puedes para editar un producto que no has creado',
+          403
+        )
+      }
+    }
+
     const images = await uploadImages(req)
     const updateProduct = await buildUpdateProduct(
       title,
@@ -115,12 +127,26 @@ export async function updateProductById(
 }
 
 export async function deleteProductById(
-  req: Request,
+  req: any,
   res: Response
 ): Promise<void> {
   const { pid } = req.params
+  const userId = req.user.uid
+  const role = req.user.role
 
   try {
+    // Comprobar si el usuario premium es el propietario del producto
+    if (role === 'premium') {
+      // Obtener el producto por su ID
+      const productId = await product.getProductById(pid)
+      if (productId?.owner !== userId) {
+        throw new CustomError(
+          'Acceso denegado. No puedes para eliminar un producto que no has creado',
+          403
+        )
+      }
+    }
+
     const data = await product.deleteProduct(pid)
     res.status(200).json({
       status: 'success',

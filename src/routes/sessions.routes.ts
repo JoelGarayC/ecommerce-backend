@@ -4,7 +4,9 @@ import {
   current,
   login,
   logout,
-  register
+  recoveryPassword,
+  register,
+  resetPassword
 } from '../dao/controllers/session.controller'
 import { authorization } from '../middlewares/authorization'
 import { validatorExpressError } from '../middlewares/validatorError'
@@ -21,8 +23,10 @@ router.post(
   verifyCart,
   login
 )
-router.get('/current', authorization(['admin', 'user']), current)
+router.get('/current', authorization(['admin', 'user', 'premium']), current)
 router.post('/logout', logout)
+router.post('/recoveryPassword', authorization(['admin']), recoveryPassword)
+router.post('/resetPassword', resetPassword)
 
 router.get(
   '/github',

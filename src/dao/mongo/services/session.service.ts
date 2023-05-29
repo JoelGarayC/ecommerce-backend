@@ -6,6 +6,10 @@ import { generateToken, type ReturnToken } from '../../../utils/generateToken'
 import { hashPassword } from '../../../utils/hashPassword'
 import { User } from '../models/User'
 
+interface PropsResetPass {
+  uid: string
+  newPassword: string
+}
 class SessionService {
   async register(user: IUser): Promise<ReturnToken> {
     const existingUser = await User.findOne({ email: user.email })
@@ -64,6 +68,30 @@ class SessionService {
   async logout(res: Response): Promise<string> {
     res.clearCookie('token')
     return 'sesión cerrada'
+  }
+
+  async resetPassword({ uid, newPassword }: PropsResetPass): Promise<string> {
+    const user = await User.findById(uid)
+    if (user === null) {
+      throw new CustomError('Usuario no encontrado', 403)
+    }
+
+    if (newPassword === undefined) {
+      throw new CustomError('Proporcione la nueva contraseña', 400)
+    }
+
+    // Verificar si la nueva contraseña es igual a la contraseña actual
+    const isSamePassword = await compare(newPassword, user.password)
+    if (isSamePassword) {
+      throw new CustomError('La contraseña debe ser diferente a la actual', 400)
+    }
+
+    // Generar un hash de la nueva contraseña
+    const hashedPassword = await hashPassword(newPassword)
+
+    user.password = hashedPassword
+    await user.save()
+    return 'Contraseña restablecida exitosamente'
   }
 }
 

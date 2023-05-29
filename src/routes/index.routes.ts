@@ -13,7 +13,7 @@ router.use('/carts', carts)
 router.use('/sessions', sessions)
 router.use('/users', users)
 
-router.get('/mockingproducts', mockProducts)
+router.get('/mockingProducts', mockProducts)
 router.get('/loggerTest', loggerTest)
 
 router.get('/', async (_req: Request, res: Response) => {

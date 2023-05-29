@@ -26,3 +26,19 @@ export async function generateToken(user: IUser): Promise<ReturnToken> {
     throw new CustomError('El token no se pudo generar', 400)
   }
 }
+
+export async function generateTokenRecoveryPass(user: IUser): Promise<string> {
+  try {
+    const token = sign(
+      { uid: user._id, role: user.role },
+      JWT_SECRET as string,
+      {
+        expiresIn: '1h'
+      }
+    )
+    return token
+  } catch (err: any) {
+    logger.error(`El token no se pudo generar: ${err?.message as string} `)
+    throw new CustomError('El token no se pudo generar', 400)
+  }
+}

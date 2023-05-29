@@ -1,8 +1,10 @@
 import { type Request, type Response } from 'express'
-import { responseCustomError } from '../../utils/CustomError'
+import { CustomError, responseCustomError } from '../../utils/CustomError'
 import CartService from '../mongo/services/cart.service'
+import ProductService from '../mongo/services/product.service'
 
 const cart = new CartService()
+const product = new ProductService()
 
 export async function getCarts(_req: Request, res: Response): Promise<void> {
   try {
@@ -42,13 +44,23 @@ export async function addCart(_req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function addProductToCart(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function addProductToCart(req: any, res: Response): Promise<void> {
   const { cid, pid } = req.params
+  const role = req.user?.role
+  const userId = req.user?.uid
 
   try {
+    if (role === 'premium') {
+      // Obtener el producto por su ID
+      const productId = await product.getProductById(pid)
+      if (productId?.owner === userId) {
+        throw new CustomError(
+          'Acceso denegado. No puedes agregar un producto que te pertenece',
+          403
+        )
+      }
+    }
+
     const data = await cart.addProduct(cid, pid)
     res.status(200).json({
       status: 'success',

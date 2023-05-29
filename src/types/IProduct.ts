@@ -15,6 +15,7 @@ export interface IProduct {
   stock: number
   category: string
   status: boolean
+  owner?: string
 }
 
 export interface ProductProps {
