@@ -25,7 +25,7 @@ router.post(
 )
 router.get('/current', authorization(['admin', 'user', 'premium']), current)
 router.post('/logout', logout)
-router.post('/recoveryPassword', authorization(['admin']), recoveryPassword)
+router.post('/recoveryPassword', recoveryPassword)
 router.post('/resetPassword', resetPassword)
 
 router.get(

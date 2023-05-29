@@ -127,6 +127,8 @@ export async function recoveryPassword(
     // Crear un enlace con el token de restablecimiento de contraseña
     const resetLink = `${api.urlBase}/resetPassword?token=${token}`
 
+    console.log(resetLink)
+
     // Configurar el contenido del correo electrónico
     const mailOptions = {
       from: NODEMAILER_USER as string,

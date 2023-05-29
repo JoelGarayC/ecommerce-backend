@@ -9,6 +9,7 @@ import {
   homePage,
   login,
   profile,
+  recoveryPassword,
   register,
   resetPassword
 } from '../dao/controllers/views.controller'
@@ -18,6 +19,7 @@ const router = Router()
 
 router.get('/login', login)
 router.get('/register', register)
+router.get('/recoveryPassword', recoveryPassword)
 router.get('/resetPassword', resetPassword)
 router.get('/profile', authorization(['admin', 'user', 'premium']), profile)
 
