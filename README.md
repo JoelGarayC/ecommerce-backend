@@ -1,10 +1,16 @@
-## DESAFÍO COMPLEMENTARIO
+## Documentación con swagger
 
 ---
 
 <br>
 
-Comandos par aejecutar la aplicación:
+Ruta de documentación con swagger
+
+- /api/docs
+
+<br>
+
+Comandos para ejecutar la aplicación:
 
 En desarrollo:
 

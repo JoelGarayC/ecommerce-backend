@@ -6,6 +6,7 @@ import { create } from 'express-handlebars'
 import handlebars from 'handlebars'
 import { createTransport } from 'nodemailer'
 import { join } from 'path'
+import swaggerJSDoc from 'swagger-jsdoc'
 
 const {
   PORT = 8080,
@@ -95,6 +96,20 @@ export const transporter = createTransport({
     pass: NODEMAILER_PASS as string
   }
 })
+
+export const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentación con swagger Ecommerce',
+      description: 'API de ecommerce',
+      version: '1.0.0'
+    }
+  },
+  apis: ['./src/docs/**/*.yml']
+}
+
+export const swaggerSpec = swaggerJSDoc(swaggerOptions)
 
 export {
   GITHUB_CLIENT_ID,

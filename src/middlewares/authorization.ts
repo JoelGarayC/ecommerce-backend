@@ -22,9 +22,9 @@ export const authorization = (role: UserRole[]) => {
       }
       next()
     } catch (err: any) {
-      res.status(401).json({
+      res.status(403).json({
         status: 'error',
-        statusCode: 401,
+        statusCode: 403,
         message: errorTokens(err.message)
       })
     }

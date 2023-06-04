@@ -1,0 +1,170 @@
+paths:
+  /api/v1/products:
+    get:
+      summary: Obtener todos los productos
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  totalPages:
+                    type: integer
+                  prevPage:
+                    type: integer
+                  nextPage:
+                    type: integer
+                  page:
+                    type: integer
+                  hasPrevPage:
+                    type: boolean
+                  hasNextPage:
+                    type: boolean
+                  prevLink:
+                    type: string
+                  nextLink:
+                    type: string
+        '500':
+          description: Error interno del servidor
+
+  /api/v1/products/{pid}:
+    get:
+      summary: Obtener un producto por su ID
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Producto no encontrado
+    put:
+      summary: Actualizar un producto por su ID
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct'
+      security:
+        - adminAuth: [admin]
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: Solicitud inválida
+        '403':
+          description: Acceso denegado para usuarios no administradores
+        '404':
+          description: Producto no encontrado
+
+    delete:
+      summary: Eliminar un producto por su ID
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      security:
+        - adminAuth: [admin]
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '403':
+          description: Acceso denegado para usuarios no administradores
+        '404':
+          description: Producto no encontrado
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+          required: true
+          unique: true
+          index: true
+        description:
+          type: string
+          required: true
+        price:
+          type: number
+          required: true
+        thumbnails:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              path:
+                type: string
+          default: []
+        code:
+          type: string
+          required: true
+          unique: true
+          index: true
+        stock:
+          type: number
+          required: true
+        category:
+          type: string
+          required: true
+          lowercase: true
+          index: true
+        status:
+          type: boolean
+          required: true
+        owner:
+          type: string
+          default: 'admin'
+  securitySchemes:
+    userAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Ingrese el token de inicio de sesión de JWT.

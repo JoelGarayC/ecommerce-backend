@@ -5,7 +5,14 @@ import cors from 'cors'
 import express, { type Express } from 'express'
 import passport from 'passport'
 import { join } from 'path'
-import { api, configCloudinary, configHandlebars, corsOptions } from './config'
+import swaggerUi from 'swagger-ui-express'
+import {
+  api,
+  configCloudinary,
+  configHandlebars,
+  corsOptions,
+  swaggerSpec
+} from './config'
 import { connectDb } from './dataBase/connectDb'
 import routes from './routes/index.routes'
 import viewsRoutes from './routes/views.routes'
@@ -38,6 +45,7 @@ class App {
     this.app.use(express.static(join(__dirname, '../public')))
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(passport.initialize())
+    this.app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
   }
 
   private routes(): void {
