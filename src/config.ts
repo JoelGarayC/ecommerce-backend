@@ -106,7 +106,7 @@ export const swaggerOptions = {
       version: '1.0.0'
     }
   },
-  apis: ['./src/docs/**/*.yml']
+  apis: [join(__dirname, './docs/**/*.yml')]
 }
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions)
