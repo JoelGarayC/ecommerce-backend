@@ -6,7 +6,9 @@
 
 Pasos para Test
 
-- Inicie npm run dev
+- npm install
+
+- npm run dev
 - Inicie npm run test - paralelo al anterior
 
 <br>
