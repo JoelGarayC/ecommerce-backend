@@ -1,6 +1,15 @@
-## Documentación con swagger
+## DESAFIO TEST
 
 ---
+
+<br>
+
+Pasos para Test
+
+- Inicie npm run dev
+- Inicie npm run test - paralelo al anterior
+
+<br>
 
 <br>
 
