@@ -46,6 +46,12 @@ class SessionService {
       throw new CustomError('Contraseña incorrecta', 403)
     }
 
+    // actualizando la ultima connection
+    await User.updateOne(
+      { _id: userData._id },
+      { lastConnection: new Date().toUTCString() }
+    )
+
     // Generar un token JWT para el usuario
     const token = await generateToken(userData)
     return token
@@ -65,8 +71,14 @@ class SessionService {
     return user
   }
 
-  async logout(res: Response): Promise<string> {
+  async logout(res: Response, uid: string): Promise<string> {
     res.clearCookie('token')
+
+    // actualizando la ultima connection
+    await User.updateOne(
+      { _id: uid },
+      { lastConnection: new Date().toUTCString() }
+    )
     return 'sesión cerrada'
   }
 

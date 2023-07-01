@@ -21,6 +21,18 @@ const UserSchema = new Schema<IUser>({
   role: {
     type: String,
     default: 'user'
+  },
+  documents: {
+    type: [
+      {
+        name: String,
+        reference: String
+      }
+    ],
+    default: []
+  },
+  lastConnection: {
+    type: String
   }
 })
 

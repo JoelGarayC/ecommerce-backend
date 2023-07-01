@@ -97,9 +97,10 @@ export async function current(req: any, res: Response): Promise<void> {
   }
 }
 
-export async function logout(_req: Request, res: Response): Promise<void> {
+export async function logout(req: any, res: Response): Promise<void> {
   try {
-    const data = await session.logout(res)
+    const uid = req.user?.uid as string
+    const data = await session.logout(res, uid)
     res.status(201).json({
       status: 'success',
       message: data
