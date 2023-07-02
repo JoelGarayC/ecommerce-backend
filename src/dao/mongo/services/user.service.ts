@@ -42,6 +42,7 @@ class UserService {
       throw new CustomError('No se encontró al usuario', 401)
     }
     await user.updateOne({ role: newRole })
+
     return 'Rol de usuario actualizado'
   }
 

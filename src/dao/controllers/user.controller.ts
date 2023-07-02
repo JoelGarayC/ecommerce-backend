@@ -1,6 +1,7 @@
 import { type Request, type Response } from 'express'
 import { api } from '../../config'
 import { CustomError, responseCustomError } from '../../utils/CustomError'
+import { isCompleteDocs } from '../../utils/isCompleteDocs'
 import { User } from '../mongo/models/User'
 import UserService from '../mongo/services/user.service'
 
@@ -56,9 +57,16 @@ export async function changeRolePremium(
 
   try {
     const userRole = await user.getUserRole(uid)
-    const newRole = userRole === 'user' ? 'premium' : 'user'
+    let newRole = ''
+    if (userRole === 'user') {
+      const res = isCompleteDocs(uid)
+      newRole = await res
+    } else {
+      newRole = 'user'
+    }
 
     const data = await user.updateUserRole(uid, newRole)
+
     res.status(201).json({
       status: 'success',
       message: data
@@ -80,7 +88,6 @@ export async function uploadDocuments(
     }
 
     // Guardar la información de las imágenes en la base de datos
-
     const documents = docs.map((file: Express.Multer.File) => ({
       name: file.filename,
       reference: `${api.urlBase}${file.path.split('public')[1]}`
