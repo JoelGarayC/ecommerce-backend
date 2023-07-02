@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "ecommerce-backend",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
