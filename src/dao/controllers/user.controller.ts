@@ -80,10 +80,16 @@ export async function uploadDocuments(
   req: Request,
   res: Response
 ): Promise<void> {
+  const { uid } = req.params
   try {
     // Verificar si no se encontraron archivos en la solicitud
     const docs = req.files
-    if (!Array.isArray(docs) || docs === null || docs === undefined) {
+    if (
+      !Array.isArray(docs) ||
+      docs === null ||
+      docs === undefined ||
+      docs.length === 0
+    ) {
       throw new CustomError('No se encontraron archivos en la solicitud', 400)
     }
 
@@ -92,8 +98,7 @@ export async function uploadDocuments(
       name: file.filename,
       reference: `${api.urlBase}${file.path.split('public')[1]}`
     }))
-
-    await User.updateOne({ documents })
+    await User.updateOne({ _id: uid }, { $push: { documents } })
 
     res.status(201).json({
       status: 'success',
