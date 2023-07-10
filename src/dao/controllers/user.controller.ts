@@ -2,6 +2,7 @@ import { type Request, type Response } from 'express'
 import { api } from '../../config'
 import { CustomError, responseCustomError } from '../../utils/CustomError'
 import { isCompleteDocs } from '../../utils/isCompleteDocs'
+import UserDTO from '../DTOs/User.dto'
 import { User } from '../mongo/models/User'
 import UserService from '../mongo/services/user.service'
 
@@ -10,9 +11,13 @@ const user = new UserService()
 export async function getUsers(_req: Request, res: Response): Promise<void> {
   try {
     const data = await user.getUsers()
+
+    //  UserDTO a cada elemento del arreglo
+    const dataDTO = data.map((user) => new UserDTO(user))
+
     res.status(201).json({
       status: 'success',
-      payload: data
+      payload: dataDTO
     })
   } catch (err) {
     responseCustomError(res, err)
@@ -26,6 +31,19 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
     res.status(201).json({
       status: 'success',
       user: data
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function deleteUsers(_req: Request, res: Response): Promise<void> {
+  try {
+    const data = await user.clearUsers()
+
+    res.status(201).json({
+      status: 'success',
+      message: data
     })
   } catch (err) {
     responseCustomError(res, err)

@@ -85,6 +85,7 @@ export async function current(req: any, res: Response): Promise<void> {
 
   try {
     const data = await session.current({ uid, role })
+
     // solo información necesaria se le envia al usuario
     const dataDTO = new UserDTO(data)
 

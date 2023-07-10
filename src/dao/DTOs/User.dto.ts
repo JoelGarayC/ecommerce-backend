@@ -7,6 +7,7 @@ class UserDTO {
   age: number | undefined
   role: UserRole | undefined
   cart: string | undefined
+  lastConnection: string | undefined
 
   constructor(user: IUser) {
     this.firstName = user.firstName ?? 'Nombres'
@@ -15,6 +16,7 @@ class UserDTO {
     this.age = user.age
     this.role = user.role
     this.cart = user.cart
+    this.lastConnection = user.lastConnection
   }
 }
 

@@ -20,6 +20,44 @@ class UserService {
     return user
   }
 
+  async clearUsers(): Promise<string> {
+    const users = await User.find()
+    if (users.length === 0) {
+      throw new CustomError('No existen usuarios', 401)
+    }
+
+    const fecha = new Date().toUTCString()
+    const fechaActual = new Date(fecha)
+
+    const daysLimite = 2
+
+    const usersDelete: IUser[] = []
+    users.map(async (user) => {
+      if (user.lastConnection !== undefined) {
+        const fechaUltimaConexion = new Date(user.lastConnection)
+        const diferenciaTiempo =
+          fechaActual.getTime() - fechaUltimaConexion.getTime()
+
+        const diferenciaDias = Math.floor(
+          diferenciaTiempo / (1000 * 60 * 60 * 24)
+        )
+
+        if (diferenciaDias >= daysLimite) {
+          return usersDelete.push(user)
+        }
+      }
+    })
+
+    if (usersDelete.length > 0) {
+      for (const userD of usersDelete) {
+        await User.deleteOne({ _id: userD._id })
+      }
+      return 'Usuarios sin conexión, eliminados'
+    } else {
+      throw new CustomError('No se encontraron usuarios sin conexión', 401)
+    }
+  }
+
   async getUserByEmail(email: string): Promise<IUser> {
     const user = await User.findOne({ email })
     if (user === null) {

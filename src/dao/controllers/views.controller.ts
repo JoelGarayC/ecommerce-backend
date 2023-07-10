@@ -83,7 +83,7 @@ export async function homePage(_req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function login(_req: Request, res: Response): Promise<void> {
+export async function login(req: Request, res: Response): Promise<void> {
   try {
     res.render('login')
   } catch (err) {

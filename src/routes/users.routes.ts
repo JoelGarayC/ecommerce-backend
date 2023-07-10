@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   changeRolePremium,
   deleteUserById,
+  deleteUsers,
   getUsers,
   uploadDocuments
 } from '../dao/controllers/user.controller'
@@ -10,7 +11,10 @@ import { uploaderDocs } from '../middlewares/uploaderImagesFs'
 
 const router = Router()
 
-router.get('/', authorization(['admin']), getUsers)
+router
+  .route('/')
+  .get(authorization(['admin']), getUsers)
+  .delete(authorization(['admin']), deleteUsers)
 router.delete('/:uid', authorization(['admin']), deleteUserById)
 router.post('/:uid/documents', uploaderDocs.array('documents'), uploadDocuments)
 router.post('/premium/:uid', authorization(['admin']), changeRolePremium)

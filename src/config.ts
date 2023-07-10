@@ -24,7 +24,7 @@ const {
   NODEMAILER_PASS
 } = process.env
 
-const version = '/v1'
+const version = ''
 const pathBase = `/api${version}`
 export const urlBase =
   (NODE_ENV as string) === 'production'
