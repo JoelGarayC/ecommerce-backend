@@ -10,8 +10,7 @@ export const authorization = (role: UserRole[]) => {
       const tokenHeader = authHeader?.substring(7)
 
       // token  desde cookies o headers
-      const token =
-        req?.cookies?.token ?? req?.cookies?.tokenLocal ?? tokenHeader
+      const token = req?.cookies?.token ?? tokenHeader
 
       if (token === undefined || req.user !== undefined) {
         throw new Error('No autorizado, ¡Inicia sesión!')
