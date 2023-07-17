@@ -1,6 +1,6 @@
 <section class='register-section'>
   <h1>Registrarse</h1>
-  <form action='/api/v1/sessions/register' method='post'>
+  <div>
     <div class='form-input'>
       <label for='name'>Nombre: </label>
       <input type='text' id='firstName' name='firstName' required />
@@ -22,15 +22,53 @@
       <input type='password' id='password' name='password' required />
     </div>
 
-    <button type='submit'>Registrarme</button>
-  </form>
+    <button type='submit' onclick='register()'>Registrarme</button>
+  </div>
+  <div id='error-message' style='color: red;'></div>
+
   <div>
     <a href='/login'>Ya tengo una cuenta . Ingresa aquí</a>
   </div>
 </section>
 
 <style>
-  .register-section { display: grid; justify-content: center; gap:
-  0.5rem;margin-top: 10rem;padding: 1rem;} .login-section div, .register-section
-  form { max-width: 70rem} .form-input { display: grid;margin-bottom: 1rem; }
+  .register-section {
+    display: grid;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 10rem;
+    padding: 1rem;
+  }
+
+  .login-section div,
+  .register-section form {
+    max-width: 70rem
+  }
+
+  .form-input {
+    display: grid;
+    margin-bottom: 1rem;
+  }
 </style>
+
+<script>
+  function register() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const age = document.getElementById('age').value;
+    fetch('/api/sessions/register', {
+      method: 'POST', headers: {
+        'Content-Type':
+          'application/json'
+      }, body: JSON.stringify({ firstName, lastName, email, password, age })
+    })
+      .then(response => {
+        if (response.ok) { window.location.href = '/login'; }
+        else { throw new Error('Ocurrio un error al registrarse'); }
+      }).catch(error => {
+        document.getElementById('error-message').textContent = error.message;
+      });
+  }
+</script>

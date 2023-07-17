@@ -37,9 +37,9 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function deleteUsers(_req: Request, res: Response): Promise<void> {
+export async function deleteUsers(req: any, res: Response): Promise<void> {
   try {
-    const data = await user.clearUsers()
+    const data = await user.clearUsers(req.user.uid as string)
 
     res.status(201).json({
       status: 'success',

@@ -56,10 +56,10 @@
   overflow: hidden; } .list-carrito li div { padding: 1rem; } .list-carrito li
   picture { width: 100%; max-width: 250px; border-radius: 0.5rem; } @media
   screen and (max-width: 650px) { .list-carrito li { display: flex;
-  flex-direction: column; } .list-carrito li div { width: 100%; } }.btn-delete {
-  padding: 1rem 0;display: flex;justify-content: end; } .btn-delete button {
+  flex-direction: column; } .list-carrito li div { width: 100%; } } .btn-delete
+  { padding: 1rem 0; display: flex; justify-content: end; } .btn-delete button {
   background-color: rgb(202, 69, 69); } .btn-checkout { display: flex;
-  justify-content: end;padding: 1rem 0; }
+  justify-content: end; padding: 1rem 0; }
 </style>
 
 <script>
@@ -68,7 +68,7 @@
   btn.addEventListener("click", (e) => { const idProd =
   btn.getAttribute('data-product-id'); const idCart =
   listCart.getAttribute('data-cart-id');
-  fetch(`/api/v1/carts/${idCart}/products/${idProd}`, { method: 'DELETE'
+  fetch(`/api/carts/${idCart}/products/${idProd}`, { method: 'DELETE'
   }).then(response => response.json()).then(product => {
   alert(product?.message); window.location.reload(); }).catch(error =>
   console.error(`Error: ${error}`)); }); });

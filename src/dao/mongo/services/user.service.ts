@@ -1,5 +1,6 @@
 import { type IUser, type UserRole } from '../../../types/IUser'
 import { CustomError } from '../../../utils/CustomError'
+import { sendDeleteEmail } from '../../../utils/sendDeleteEmail'
 import { Cart } from '../models/Cart'
 import { User } from '../models/User'
 
@@ -20,7 +21,7 @@ class UserService {
     return user
   }
 
-  async clearUsers(): Promise<string> {
+  async clearUsers(uid: string): Promise<string> {
     const users = await User.find()
     if (users.length === 0) {
       throw new CustomError('No existen usuarios', 401)
@@ -31,7 +32,10 @@ class UserService {
 
     const daysLimite = 2
 
+    // usuarios que tengan la ultima conexion
     const usersDelete: IUser[] = []
+    const userAdmin = await User.findById(uid)
+
     users.map(async (user) => {
       if (user.lastConnection !== undefined) {
         const fechaUltimaConexion = new Date(user.lastConnection)
@@ -42,16 +46,20 @@ class UserService {
           diferenciaTiempo / (1000 * 60 * 60 * 24)
         )
 
-        if (diferenciaDias >= daysLimite) {
+        if (diferenciaDias >= daysLimite && user.email !== userAdmin?.email) {
           return usersDelete.push(user)
         }
       }
     })
 
     if (usersDelete.length > 0) {
-      for (const userD of usersDelete) {
-        await User.deleteOne({ _id: userD._id })
-      }
+      const deletePromises = usersDelete.map(async (userD) => {
+        await sendDeleteEmail(userD.email)
+        return await User.deleteOne({ _id: userD._id })
+      })
+
+      await Promise.all(deletePromises)
+
       return 'Usuarios sin conexión, eliminados'
     } else {
       throw new CustomError('No se encontraron usuarios sin conexión', 401)

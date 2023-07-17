@@ -63,6 +63,14 @@ class CartService {
       throw new CustomError(errDictionary.CART_NOT_FOUND, 404)
     }
 
+    // verificar q exista stock del productp
+    const existStock = await Product.findById(idProduct)
+    if (existStock?.stock !== undefined) {
+      if (existStock.stock < 1) {
+        throw new CustomError('No hay suficiente stock del producto', 402)
+      }
+    }
+
     // Verificar si el producto ya existe en el carrito, si existe aumente el quantity
     const existProdinCart = await Cart.findOne({
       _id: idCart,

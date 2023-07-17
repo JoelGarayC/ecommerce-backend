@@ -2,6 +2,7 @@ import mongoose, { type PaginateResult } from 'mongoose'
 import { api } from '../../../config'
 import { type IProduct, type ProductProps } from '../../../types/IProduct'
 import { CustomError, errDictionary } from '../../../utils/CustomError'
+import { sendDelProdPremium } from '../../../utils/sendDelProdPremium'
 import {
   validateFields,
   validateIdProduct,
@@ -9,6 +10,7 @@ import {
   validateType
 } from '../../../utils/validations'
 import { Product } from '../models/Product'
+import { User } from '../models/User'
 const { ObjectId } = mongoose.Types
 
 class ProductService {
@@ -126,7 +128,18 @@ class ProductService {
   async deleteProduct(id: string): Promise<string> {
     await validateIdProduct(id)
 
-    await Product.findByIdAndDelete(id)
+    const deletedProduct = await Product.findByIdAndDelete(id)
+
+    // verificar si el producto eliminado pertenece a un usuario premium
+    // en tal caso, envia un email de confirmación
+    if (deletedProduct?.owner !== 'admin') {
+      const idPremium = deletedProduct?.owner
+      const nameProduct = deletedProduct?.title as string
+      const premium = await User.findById(idPremium)
+      if (premium !== null) {
+        await sendDelProdPremium(premium.email, nameProduct)
+      }
+    }
     return 'Producto eliminado correctamente'
   }
 }
