@@ -59,11 +59,16 @@
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
-  const socket = io();
+  const socket = io({
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
   console.log("Connect Socket io");
   const user = sessionStorage.getItem('usuario');
   if (user) {
-    const campoInput = document.getElementById('email'); campoInput.value = user;
+    const campoInput = document.getElementById('email');
+    campoInput.value = user;
   };
 
   const formMessage = document.getElementById("form-message");
