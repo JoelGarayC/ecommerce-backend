@@ -103,8 +103,10 @@ export async function profile(req: any, res: Response): Promise<void> {
   const { uid } = req.user
   try {
     const data = await user.getUserById(uid)
+    const isAdmin = req.user?.role === 'admin' || req.user?.role === 'premium'
     res.render('profile', {
-      data
+      data,
+      isAdmin
     })
   } catch (err) {
     responseCustomError(res, err)

@@ -1,31 +1,59 @@
 <section class='profile-section'>
   {{#if data}}
-    <div>
-      <h1>Perfil del usuario</h1>
-      <p><strong>Nombres: </strong> {{data.firstName}}</p>
-      <p><strong>Apellidos:</strong> {{data.lastName}}</p>
-      <p><strong>Correo:</strong> {{data.email}}</p>
-      <p><strong>Edad:</strong> {{data.age}}</p>
-      <p><strong>Rol:</strong> {{data.role}}</p>
-      <br />
-      <form action='/api/sessions/logout' method='POST'>
-        <button type='submit'>Cerrar sesión</button>
-      </form>
-    </div>
+  <div>
+    <h1>Perfil del usuario</h1>
+    <p><strong>Nombres: </strong> {{data.firstName}}</p>
+    <p><strong>Apellidos:</strong> {{data.lastName}}</p>
+    <p><strong>Correo:</strong> {{data.email}}</p>
+    <p><strong>Edad:</strong> {{data.age}}</p>
+    <p><strong>Rol:</strong> {{data.role}}</p>
     <br />
-    <div>
-      <a href='/products'>Ir a Productos</a>
-      <br />
-      <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
-    </div>
+    <section>
+      <button type='submit' onclick="logout()">Cerrar sesión</button>
+      <div id='error-message' style='color: red;'></div>
+    </section>
+  </div>
+  <br />
+  <div>
+    <a href='/products'>Ir a Productos</a>
+    <br />
+    <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
+    <br>
+    {{#if isAdmin}}
+    <a href='/addproduct'>Agregar Productos</a>
+    {{/if}}
+  </div>
   {{else}}
-    <div>
-      <p>No tiene acceso a esta pag . Inicie sesión</p>
-      <a href='/login'>Iniciar sesión</a>
-    </div>
+  <div>
+    <p>No tiene acceso a esta pag . Inicie sesión</p>
+    <a href='/login'>Iniciar sesión</a>
+  </div>
   {{/if}}
 </section>
 
 <style>
-  .profile-section { max-width: 1200px; padding: 1rem; margin: 0 auto; }
+  .profile-section {
+    max-width: 1200px;
+    padding: 1rem;
+    margin: 0 auto;
+  }
 </style>
+
+<script>
+  function logout() {
+    fetch('/api/sessions/logout', {
+      method: 'POST', headers: {
+        'Content-Type':
+          'application/json'
+      },
+    })
+      .then(response => {
+        if (response.ok) { window.location.href = '/login'; }
+        else { throw new Error('Ocurrio un error al cerrar sesión'); }
+      })
+      .catch(error => {
+        document.getElementById('error-message').textContent =
+          error.message;
+      });
+  }
+</script>
