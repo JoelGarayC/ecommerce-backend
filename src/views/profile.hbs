@@ -42,18 +42,21 @@
 <script>
   function logout() {
     fetch('/api/sessions/logout', {
-      method: 'POST', headers: {
-        'Content-Type':
-          'application/json'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
     })
       .then(response => {
-        if (response.ok) { window.location.href = '/login'; }
-        else { throw new Error('Ocurrio un error al cerrar sesión'); }
+        if (response.ok) {
+          window.location.href = '/login';
+        }
+        else {
+          throw new Error('Ocurrio un error al cerrar sesión');
+        }
       })
       .catch(error => {
-        document.getElementById('error-message').textContent =
-          error.message;
+        document.getElementById('error-message').textContent = error.message;
       });
   }
 </script>

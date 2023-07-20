@@ -58,16 +58,24 @@
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const age = document.getElementById('age').value;
+
     fetch('/api/sessions/register', {
-      method: 'POST', headers: {
+      method: 'POST',
+      headers: {
         'Content-Type':
           'application/json'
-      }, body: JSON.stringify({ firstName, lastName, email, password, age })
+      },
+      body: JSON.stringify({ firstName, lastName, email, password, age })
     })
       .then(response => {
-        if (response.ok) { window.location.href = '/login'; }
-        else { throw new Error('Ocurrio un error al registrarse'); }
-      }).catch(error => {
+        if (response.ok) {
+          window.location.href = '/login';
+        }
+        else {
+          throw new Error('Ocurrio un error al registrarse');
+        }
+      })
+      .catch(error => {
         document.getElementById('error-message').textContent = error.message;
       });
   }

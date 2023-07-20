@@ -30,18 +30,48 @@
 </section>
 
 <style>
-  .login-section { display: grid; justify-content: center; gap: 0.5rem;
-  margin-top: 10rem; padding: 1rem; } .login-section div, .login-section form {
-  max-width: 50rem } .form-input { display: grid; margin-bottom: 1rem; }
+  .login-section {
+    display: grid;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 10rem;
+    padding: 1rem;
+  }
+
+  .login-section div,
+  .login-section form {
+    max-width: 50rem
+  }
+
+  .form-input {
+    display: grid;
+    margin-bottom: 1rem;
+  }
 </style>
 
 <script>
-  function login() { const email = document.getElementById('email').value; const
-  password = document.getElementById('password').value;
-  fetch('/api/sessions/login', { method: 'POST', headers: { 'Content-Type':
-  'application/json' }, body: JSON.stringify({ email, password }) })
-  .then(response => { if (response.ok) { window.location.href = '/profile'; }
-  else { throw new Error('Ocurrio un error al iniciar sesión'); } })
-  .catch(error => { document.getElementById('error-message').textContent =
-  error.message; }); }
+  function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    fetch('/api/sessions/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+          'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.href = '/profile';
+        }
+        else {
+          throw new Error('Ocurrio un error al iniciar sesión');
+        }
+      })
+      .catch((error) => {
+        document.getElementById('error-message').textContent = error.message;
+      });
+  }
 </script>
