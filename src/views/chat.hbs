@@ -59,7 +59,8 @@
 
 <script src='/socket.io/socket.io.js'></script>
 <script>
-  const socket = io({
+  const socket = io('wss://ecommerce-backend-rho.vercel.app', {
+    path: '/socket.io',
     transports: ['websocket'],
     secure: true,
   });
