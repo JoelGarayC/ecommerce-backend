@@ -3,6 +3,7 @@ import {
   changeRolePremium,
   deleteUserById,
   deleteUsers,
+  getUserById,
   getUsers,
   uploadDocuments
 } from '../dao/controllers/user.controller'
@@ -15,7 +16,10 @@ router
   .route('/')
   .get(authorization(['admin']), getUsers)
   .delete(authorization(['admin']), deleteUsers)
-router.delete('/:uid', authorization(['admin']), deleteUserById)
+router
+  .route('/:uid')
+  .get(getUserById)
+  .delete(authorization(['admin']), deleteUserById)
 router.post('/:uid/documents', uploaderDocs.array('documents'), uploadDocuments)
 router.post('/premium/:uid', authorization(['admin']), changeRolePremium)
 

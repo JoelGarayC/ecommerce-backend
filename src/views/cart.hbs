@@ -31,9 +31,13 @@
       {{/each}}
     </ul>
   </div>
+  <div>
+    <br>
+    <p>Precio Total: ${{ totalPrice }}</p>
+  </div>
   <div class='btn-checkout'>
     <div>
-      <button>Comprar</button>
+      <button onclick="checkout()">Comprar</button>
     </div>
   </div>
   {{else}}
@@ -131,4 +135,20 @@
           console.error(`Error: ${error}`));
     });
   });
+
+
+  function checkout() {
+    const idCart = listCart.getAttribute('data-cart-id');
+
+    fetch(`/api/carts/${idCart}/purchase`, {
+      method: 'POST'
+    })
+      .then(response => response.json())
+      .then(product => {
+        alert(product?.message);
+        window.location.reload();
+      })
+      .catch(error =>
+        console.error(`Error: ${error}`));
+  }
 </script>

@@ -61,7 +61,13 @@ export async function getCartId(req: Request, res: Response): Promise<void> {
     const cartData = await cart.getCartById(cid)
     const data = cartData
 
-    res.render('cart', { data })
+    const totalPrice = data.products.reduce((accumulator, item: any) => {
+      const productPrice = item.product.price
+      const quantity = item.quantity
+      return accumulator + productPrice * quantity
+    }, 0)
+
+    res.render('cart', { data, totalPrice })
   } catch (err) {
     responseCustomError(res, err)
   }

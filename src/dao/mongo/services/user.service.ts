@@ -14,7 +14,7 @@ class UserService {
   }
 
   async getUserById(uid: string): Promise<IUser> {
-    const user = await User.findById(uid).lean()
+    const user = await User.findById(uid)
     if (user === null) {
       throw new CustomError('No se encontró al usuario', 401)
     }
