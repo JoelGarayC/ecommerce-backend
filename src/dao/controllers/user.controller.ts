@@ -75,6 +75,14 @@ export async function changeRolePremium(
 
   try {
     const userRole = await user.getUserRole(uid)
+
+    if (userRole === 'admin') {
+      throw new CustomError(
+        'No se puede modificar el rol de un usuario Administrator',
+        400
+      )
+    }
+
     let newRole = ''
     if (userRole === 'user') {
       const res = isCompleteDocs(uid)

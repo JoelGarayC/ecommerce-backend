@@ -1,0 +1,78 @@
+<section>
+  <h1>Administrador</h1>
+  <br>
+  <a href="/profile">Ir a Perfil</a>
+  <br>
+  <br>
+  <ul class='list-container'>
+    {{#if users}}
+    {{#each users}}
+    <li>
+      <div class='list-description'>
+        <p>Nombres: {{this.firstName}}</p>
+        <p>{{this.lastName}}</p>
+        <p>Correo: {{this.email}}</p>
+        <p>Rol: {{this.role}}</p>
+      </div>
+      <div class='btns'>
+        <button id='btn-update-us' data-id='{{this._id}}'>Modificar rol</button>
+        <button id='btn-delete-us' data-id='{{this._id}}'>Eliminar usuario</button>
+      </div>
+    </li>
+    {{/each}}
+    {{else}}
+    <strong>No se ha encontradon usuarios</strong>
+    {{/if}}
+  </ul>
+</section>
+
+<script>
+  const users = document.querySelectorAll('.list-container');
+
+  users.forEach((user) => {
+    user.addEventListener("click", (e) => {
+      if (e.target.id === 'btn-update-us') {
+        const id = e.target.getAttribute("data-id");
+        changeRole(id);
+
+      } else if (e.target.id === 'btn-delete-us') {
+        const id = e.target.getAttribute("data-id");
+        deleteUser(id)
+      }
+    })
+  });
+
+  function changeRole(idUser) {
+    fetch(`/api/users/premium/${idUser}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((product) => {
+        alert(product?.message);
+        window.location.reload();
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  }
+
+  function deleteUser(idUser) {
+    fetch(`/api/users/${idUser}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((product) => {
+        alert(product?.message);
+        window.location.reload();
+      })
+      .catch((error) => console.error(`Error: ${error}`));
+  }
+
+
+</script>

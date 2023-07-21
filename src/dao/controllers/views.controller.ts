@@ -103,10 +103,13 @@ export async function profile(req: any, res: Response): Promise<void> {
   const { uid } = req.user
   try {
     const data = await user.getUserById(uid)
-    const isAdmin = req.user?.role === 'admin' || req.user?.role === 'premium'
+    const isAdmin = req.user?.role === 'admin'
+    const isPremium = req.user?.role === 'premium'
+
     res.render('profile', {
       data,
-      isAdmin
+      isAdmin,
+      isPremium
     })
   } catch (err) {
     responseCustomError(res, err)
@@ -129,6 +132,17 @@ export async function resetPassword(req: any, res: Response): Promise<void> {
   try {
     res.render('resetPassword', {
       token
+    })
+  } catch (err) {
+    responseCustomError(res, err)
+  }
+}
+
+export async function dashboard(_req: Request, res: Response): Promise<void> {
+  try {
+    const users = await user.getUsers()
+    res.render('dashboard', {
+      users
     })
   } catch (err) {
     responseCustomError(res, err)

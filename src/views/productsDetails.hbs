@@ -76,7 +76,10 @@
     const idProd = btn.getAttribute('data-product-id');
     const idCart = btn.getAttribute('data-cart-id');
 
-    fetch(`/api/carts/${idCart}/products/${idProd}`, { method: 'POST' })
+    fetch(`/api/carts/${idCart}/products/${idProd}`,
+      {
+        method: 'POST'
+      })
       .then(response => response.json())
       .then(product => {
         alert(product?.message);

@@ -9,7 +9,7 @@
     <p><strong>Rol:</strong> {{data.role}}</p>
     <br />
     <section>
-      <button type='submit' onclick="logout()">Cerrar sesión</button>
+      <button type='submit' onclick='logout()'>Cerrar sesión</button>
       <div id='error-message' style='color: red;'></div>
     </section>
   </div>
@@ -18,9 +18,17 @@
     <a href='/products'>Ir a Productos</a>
     <br />
     <a href='/carts/{{data.cart}}'>Ir a Carrito</a>
-    <br>
+    <br />
     {{#if isAdmin}}
     <a href='/addproduct'>Agregar Productos</a>
+    {{/if}}
+    <br />
+    {{#if isPremium}}
+    <a href='/addproduct'>Agregar Productos</a>
+    {{/if}}
+    <br />
+    {{#if isAdmin}}
+    <a href='/dashboard'>Administrador</a>
     {{/if}}
   </div>
   {{else}}
@@ -46,17 +54,14 @@
       headers: {
         'Content-Type': 'application/json'
       },
-    })
-      .then(response => {
-        if (response.ok) {
-          window.location.href = '/login';
-        }
-        else {
-          throw new Error('Ocurrio un error al cerrar sesión');
-        }
-      })
-      .catch(error => {
-        document.getElementById('error-message').textContent = error.message;
-      });
+    }).then((response) => {
+      if (response.ok) {
+        window.location.href = '/login';
+      } else {
+        throw new Error('Ocurrio un error al cerrar sesión');
+      }
+    }).catch((error) => {
+      document.getElementById('error-message').textContent = error.message;
+    });
   }
 </script>

@@ -3,6 +3,7 @@ import { Router } from 'express'
 import {
   addProduct,
   chat,
+  dashboard,
   getCartId,
   getProducts,
   getProductsById,
@@ -31,6 +32,7 @@ router.get(
 )
 
 router.get('/addProduct', authorization(['admin', 'premium']), addProduct)
+router.get('/dashboard', authorization(['admin']), dashboard)
 router.get(
   '/carts/:cid',
   authorization(['admin', 'user', 'premium']),
