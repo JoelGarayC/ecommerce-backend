@@ -149,14 +149,15 @@ export async function purchase(req: any, res: Response): Promise<void> {
     ) {
       res.status(200).json({
         status: 'success',
-        message: 'Compra no completada',
+        message:
+          'Compra no completada, revisa el stock y la cantidad del producto',
         unPurchaseProducts: data.unPurchasedProducts
       })
     } else if (data.unPurchasedProducts.length > 0) {
       res.status(200).json({
         status: 'success',
         message:
-          'Compra completada, pero algunos productos no pudieron comprarse',
+          'Compra completada, pero algunos productos no pudieron comprarse, revisa el stock y la cantidad del producto',
         ticket: data.ticket,
         purchaseProducts: data.purchasedProducts,
         unPurchaseProducts: data.unPurchasedProducts
