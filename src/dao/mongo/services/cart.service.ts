@@ -28,6 +28,7 @@ interface ReturnPurchased {
 
 interface ReturnPurchasedAndTicket extends ReturnPurchased {
   ticket?: ITicket
+  ammount?: number
 }
 
 class CartService {
@@ -262,7 +263,7 @@ class CartService {
         purchaser: user?.email,
         purchase_datetime: Date.now()
       })
-      await sendConfirmEmail(user?.email as string, code)
+      await sendConfirmEmail(user?.email as string, code, data.totalAmount)
       return { ...data, ticket }
     }
 
