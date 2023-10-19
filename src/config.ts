@@ -21,7 +21,8 @@ const {
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
   NODEMAILER_USER,
-  NODEMAILER_PASS
+  NODEMAILER_PASS,
+  URL_FRONTEND_SVELTE
 } = process.env
 
 const version = ''
@@ -40,12 +41,18 @@ export const api = {
 
 let allowedOrigins: string[] = []
 if (NODE_ENV === 'production') {
-  allowedOrigins = [urlBase, api.urlBase, URL_FRONTEND as string]
+  allowedOrigins = [
+    urlBase,
+    api.urlBase,
+    URL_FRONTEND as string,
+    URL_FRONTEND_SVELTE as string
+  ]
 } else {
   allowedOrigins = [
     urlBase,
     api.urlBase,
     'http://localhost:5173',
+    'http://localhost:4173',
     'http://127.0.0.1:5173'
   ]
 }
