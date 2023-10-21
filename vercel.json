@@ -14,7 +14,7 @@
       "src": "/(.*)",
       "dest": "src/index.ts",
       "headers": {
-        "Access-Control-Allow-Origin": "https://ecommerce-five-wine.vercel.app, https://ecommerce-backend-rho.vercel.app, https://ecommerce-svelte-five.vercel.app",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Headers": "Authorization, Content-Type",
         "Accept": "application/json"
