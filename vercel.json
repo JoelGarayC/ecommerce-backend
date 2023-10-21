@@ -14,10 +14,10 @@
       "src": "/(.*)",
       "dest": "src/index.ts",
       "headers": {
-        "Access-Control-Allow-Origin": "https://ecommerce-svelte-five.vercel.app",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Headers": "Authorization, Content-Type",
-        "Accept": "application/json"
+        "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
       }
     }
   ]
