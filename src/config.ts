@@ -16,7 +16,7 @@ const {
   CLOUD_API_KEY,
   CLOUD_API_SECRET,
   JWT_SECRET,
-  URL_FRONTEND,
+  // URL_FRONTEND,
   URL_BACKEND,
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
@@ -42,9 +42,9 @@ export const api = {
 let allowedOrigins: string[] = []
 if (NODE_ENV === 'production') {
   allowedOrigins = [
-    urlBase,
-    api.urlBase,
-    URL_FRONTEND as string,
+    // urlBase,
+    // api.urlBase,
+    // URL_FRONTEND as string,
     URL_FRONTEND_SVELTE as string
   ]
 } else {
