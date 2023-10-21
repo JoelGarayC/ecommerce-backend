@@ -71,7 +71,8 @@ export const corsOptions: CorsOptions = {
       'The CORS policy for this site does not allow access from the specified Origin.'
     callback(new Error(msg), false)
   },
-  credentials: true
+  credentials: true,
+  preflightContinue: true
 }
 
 export function configHandlebars(app: Express): void {
